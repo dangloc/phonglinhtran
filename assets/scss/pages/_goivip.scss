@@ -1,0 +1,78 @@
+.page-goi-vip{
+    
+    .pricing-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-list li {
+        margin-bottom: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .popular-badge {
+        position: absolute;
+        top: -12px;
+        right: 20px;
+        border-radius: 20px;
+    }
+    
+    .gradient-custom {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    }
+    .gradient-custom-vv{
+        background: radial-gradient(circle at 50% 100%, #f7ff0a, #ffd000, #ffa026, #ff7144, #f9455b, #d71c6d, #ab0478, #77107b);
+        background-size: 800% 400%;
+        display: inline-block;
+        border: none;
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        transition: all .2s ease-in-out;
+        animation: Gradient 10s infinite cubic-bezier(.62, .28, .23, .99) both;
+        -webkit-animation: Gradient 10s infinite cubic-bezier(.62, .28, .23, .99) both;
+        -moz-animation: Gradient 10s infinite cubic-bezier(.62, .28, .23, .99) both;
+    }
+}
+
+@-webkit-keyframes Gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @-moz-keyframes Gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes Gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
