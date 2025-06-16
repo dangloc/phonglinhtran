@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.swiper-latest-top-sidebar', {
         slidesPerView: 1,
         autoplay: {
-            delay: 2000,
+            delay: 3000,
             disableOnInteraction: false,
         },
         grid: {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.swiper-latest', {
         slidesPerView: 4,
         autoplay: {
-            delay: 3000,
+            delay: 4700,
             disableOnInteraction: false,
         },
         spaceBetween: 24,
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.swiper-popular', {
         slidesPerView: 4,
         autoplay: {
-            delay: 3500,
+            delay: 4800,
             disableOnInteraction: false,
         },
         spaceBetween: 24,
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.swiper-tax3', {
         slidesPerView: 4,
         autoplay: {
-            delay: 4000,
+            delay: 4900,
             disableOnInteraction: false,
         },
         spaceBetween: 24,
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.swiper-tax4', {
         slidesPerView: 5,
         autoplay: {
-            delay: 4500,
+            delay: 5000,
             disableOnInteraction: false,
         },
         spaceBetween: 24,
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             prevEl: '.swiper-tax4 ~ .swiper-button-prev, .swiper-tax4 .swiper-button-prev',
         },
         breakpoints: {
-            0: { slidesPerView: 4 },
+            0: { slidesPerView: 2 },
             576: { slidesPerView: 3 },
             992: { slidesPerView: 4 }
         }
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.category-slider', {
         slidesPerView: 8,
         loop: true,
-        speed: 3000, // thời gian chạy hết 1 vòng (ms)
+        speed: 5000, // thời gian chạy hết 1 vòng (ms)
         autoplay: {
             delay: 0, // để chạy liên tục
             disableOnInteraction: false,
