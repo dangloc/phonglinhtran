@@ -20,7 +20,7 @@ jobs:
       - name: 📂 Sync files TuSacTruyen
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: 103.200.23.120
+          server: 103.124.95.168
           username: phonglinhtran@phonglinhtran.xyz
           password: ${{ secrets.FTP_PHONGLINHTRAN }}
           server-dir: /wp-content/themes/commicpro/
