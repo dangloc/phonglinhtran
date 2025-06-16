@@ -30,9 +30,6 @@ function handle_withdrawal_request() {
     $existing_requests[] = $withdrawal_data;
     update_option('withdrawal_requests', $existing_requests);
     
-    // Deduct balance from user
-    update_user_meta($user_id, '_user_balance', $user_balance - $amount);
-    
     wp_send_json_success('Yêu cầu rút tiền đã được gửi thành công');
 }
 
@@ -184,10 +181,16 @@ function process_withdrawal_request() {
     
     $request = $requests[$index];
     
-    // If rejected, return the balance to user
-    if ($status === 'rejected') {
+    if ($status === 'completed') {
+        // Check if user still has enough balance
         $user_balance = get_user_meta($request['user_id'], '_user_balance', true);
-        update_user_meta($request['user_id'], '_user_balance', $user_balance + $request['amount']);
+        if ($request['amount'] > $user_balance) {
+            wp_send_json_error('Người dùng không còn đủ số dư để thực hiện giao dịch');
+            return;
+        }
+        
+        // Deduct balance from user
+        update_user_meta($request['user_id'], '_user_balance', $user_balance - $request['amount']);
     }
     
     // Update request status
