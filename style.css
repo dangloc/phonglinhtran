@@ -83,7 +83,7 @@ a {
 
 .font-secondary-title {
   font-family: 'Island Moments', cursive;
-  font-size: 2.5rem !important;
+  font-size: 3rem !important;
   font-weight: 500; }
 
 .custom-tuvi .shimmer {
@@ -228,13 +228,13 @@ label {
     font-family: Arial, Helvetica, sans-serif;
     margin: auto;
     max-width: 100%;
-    height: 335px;
+    height: 360px;
     border-radius: 20%; }
   .section-hero-banner .carousel-cell {
     float: right;
     max-width: calc(100% - 20%);
     width: 100%;
-    height: 335px;
+    height: 360px;
     counter-increment: carousel-cell;
     transition: all .3s linear;
     opacity: 0.3;
@@ -242,7 +242,8 @@ label {
   .section-hero-banner .carousel-cell.is-selected {
     filter: blur(0);
     opacity: 1;
-    transform: scale(1.15); }
+    transform: scale(1.1);
+    top: 14px; }
   .section-hero-banner .img-custom-banner {
     object-fit: cover;
     border-radius: 12px;
@@ -414,7 +415,7 @@ label {
 
 /* Pagination Styles */
 .pagination {
-  margin: 0;
+  margin: 0 0 24px;
   padding: 0;
   list-style: none;
   display: flex;
@@ -479,7 +480,9 @@ label {
         width: calc(100% - 65%); }
         #secondary .sidebar-top-new .sidebar-top-new-item .img-box img {
           height: 100px;
-          object-fit: cover; }
+          object-fit: cover;
+          width: 80px;
+          border-radius: 8px; }
       #secondary .sidebar-top-new .sidebar-top-new-item .title-box {
         width: calc(100% - 35%);
         display: flex;
@@ -746,9 +749,20 @@ label {
       font-weight: bold;
       margin-bottom: 16px; }
     .single-truyen-chu .chapter-list-box .chapter-list-ul {
+      height: 70vh;
+      overflow-y: scroll;
       list-style: none;
       padding: 0;
       margin: 0; }
+      .single-truyen-chu .chapter-list-box .chapter-list-ul::-webkit-scrollbar {
+        width: 6px;
+        background-color: #FFD700;
+        border-radius: 4px; }
+      .single-truyen-chu .chapter-list-box .chapter-list-ul::-webkit-scrollbar-thumb {
+        background-color: #000000; }
+      .single-truyen-chu .chapter-list-box .chapter-list-ul::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #FFC300; }
       .single-truyen-chu .chapter-list-box .chapter-list-ul li {
         border-bottom: 1px solid #444;
         padding: 12px 0;

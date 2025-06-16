@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
             pageDots: true,
             prevNextButtons: false,
             wrapAround: true,
-            autoPlay: 2500,
-            selectedAttraction: 0.02,
+            autoPlay: 4000,
+            selectedAttraction: 0.03,
             friction: 0.15,
             adaptiveHeight: true
         });

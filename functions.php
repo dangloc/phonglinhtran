@@ -989,7 +989,7 @@ function register_my_menus_footer() {
 add_action( 'init', 'register_my_menus_footer' );
 
 function enqueue_video_handle_script() {
-    if (is_front_page() || is_home() ||  is_post_type_archive('truyen_chu') || is_tax('trang_thai') || is_tax('the_loai') || is_tax('tac_gia') || is_tag()) {
+    if (is_front_page() || is_home() ||  is_post_type_archive('truyen_chu') || is_tax('trang_thai') || is_tax('the_loai') || is_tax('tac_gia') || is_tag() || is_singular('truyen_chu')) {
         // Swiper CSS
         wp_enqueue_style(
             'swiper-css',

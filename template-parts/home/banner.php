@@ -33,7 +33,7 @@ if ($query->have_posts()) :
                         <div class="carousel-cell">
                             <div class="row h-100">
                                 <div class="col-lg-4 h-100">
-                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="h-100 d-block swiper-slide-a ratio-3x4 rounded-4 overflow-hidden">
+                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="h-100 d-block swiper-slide-a overflow-hidden">
                                         <?php 
                                         $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
                                         ?>

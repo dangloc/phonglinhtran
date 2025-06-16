@@ -177,7 +177,7 @@ get_header();
                                 </a>
                             <?php endif; ?>
                         </div>
-                        <div class="col-6 text-end">
+                        <div class="col-6 text-end button-next-chapter" style="display: <?php echo $show_ad ? 'none' : 'block'; ?>;">
                             <?php 
                             // Check if next chapter exists and is locked
                             $next_chapter = $current_chapter + 1;
@@ -246,11 +246,15 @@ get_header();
                     const adClickedKey = 'shopee_ad_clicked_' + truyenId;
                     const adBlock = document.getElementById('chapter-ad-block');
                     const content = document.getElementById('chapter-content');
+                    const btnNext = document.getElementsByClassName('button-next-chapter');
                     const redirectUrl = <?php echo json_encode($link_qc); ?>;
+
+                    console.log(btnNext);
 
                     // Nếu đã click quảng cáo ở truyện này rồi thì ẩn quảng cáo
                     if (localStorage.getItem(adClickedKey) === 'true') {
                         adBlock.style.display = 'none';
+                        btnNext[0].style.display = 'block'
                         content.style.display = 'block';
                     } else {
                         // Gán click cho toàn bộ khối quảng cáo
@@ -258,6 +262,7 @@ get_header();
                             window.open(redirectUrl, "_blank");
                             adBlock.style.display = 'none';
                             content.style.display = 'block';
+                            btnNext[0].style.display = 'block'
                             localStorage.setItem(adClickedKey, 'true');
                         });
                         
