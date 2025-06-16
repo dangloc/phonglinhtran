@@ -675,7 +675,9 @@ label {
   margin-bottom: 2rem; }
 .single .entry-content {
   max-width: 800px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 140%; }
 
 .single-truyen-chu {
   padding: 24px 0; }

@@ -149,6 +149,72 @@ get_header();
                     </div>
                 </div>
 
+                <!-- Mobile Circular Popup -->
+                <div id="mobile-circular-popup" style="display: none;">
+                    <?php if ($img_qc && $link_qc): ?>
+                        <div class="mobile-popup-content">
+                            <img src="<?php echo esc_url($img_qc); ?>" alt="Mobile Ad" />
+                            <div class="close-icon">×</div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <style>
+                    @media (max-width: 768px) {
+                        #mobile-circular-popup {
+                            position: fixed;
+                            top: 20%;
+                            right: 0;
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            background: #fff;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                            z-index: 1000;
+                            cursor: pointer;
+                            transition: transform 0.3s ease;
+                        }
+
+                        #mobile-circular-popup:hover {
+                            transform: scale(1.1);
+                        }
+
+                        .mobile-popup-content {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            position: relative;
+                        }
+
+                        .mobile-popup-content img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 50%;
+                        }
+
+                        .close-icon {
+                            position: absolute;
+                            top: 2px;
+                            right: 2px;
+                            width: 20px;
+                            height: 20px;
+                            background: rgba(0, 0, 0, 0.5);
+                            color: white;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 16px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            z-index: 1001;
+                        }
+                    }
+                </style>
+
                 <?php
                 // Kiểm tra chương tiếp theo có bị khóa không
                 $next_chapter_locked = false;
@@ -239,6 +305,8 @@ get_header();
 
                 <script>
                 jQuery(document).ready(function($) {
+                    // Define redirectUrl outside of conditions
+                    const redirectUrl = <?php echo json_encode($link_qc); ?>;
 
                     // *** XỬ LÝ QUẢNG CÁO ***
                     <?php if ($show_ad && $img_qc && $link_qc): ?>
@@ -247,14 +315,11 @@ get_header();
                     const adBlock = document.getElementById('chapter-ad-block');
                     const content = document.getElementById('chapter-content');
                     const btnNext = document.getElementsByClassName('button-next-chapter');
-                    const redirectUrl = <?php echo json_encode($link_qc); ?>;
-
-                    console.log(btnNext);
 
                     // Nếu đã click quảng cáo ở truyện này rồi thì ẩn quảng cáo
                     if (localStorage.getItem(adClickedKey) === 'true') {
                         adBlock.style.display = 'none';
-                        btnNext[0].style.display = 'block'
+                        btnNext[0].style.display = 'block';
                         content.style.display = 'block';
                     } else {
                         // Gán click cho toàn bộ khối quảng cáo
@@ -262,7 +327,7 @@ get_header();
                             window.open(redirectUrl, "_blank");
                             adBlock.style.display = 'none';
                             content.style.display = 'block';
-                            btnNext[0].style.display = 'block'
+                            btnNext[0].style.display = 'block';
                             localStorage.setItem(adClickedKey, 'true');
                         });
                         
@@ -275,6 +340,58 @@ get_header();
                         adBlock.addEventListener('mouseleave', function() {
                             this.style.transform = 'scale(1)';
                         });
+                    }
+                    <?php endif; ?>
+
+                    // *** XỬ LÝ MOBILE POPUP ***
+                    <?php if ($img_qc && $link_qc): ?>
+                    const mobilePopup = document.getElementById('mobile-circular-popup');
+                    const mobilePopupKey = 'mobile_popup_clicked';
+                    const pageLoadCountKey = 'mobile_popup_page_loads';
+                    
+                    // Lấy số lần load trang
+                    let pageLoads = parseInt(localStorage.getItem(pageLoadCountKey) || '0');
+                    pageLoads++;
+                    localStorage.setItem(pageLoadCountKey, pageLoads);
+
+                    // Kiểm tra xem popup đã được click chưa
+                    const isPopupClicked = localStorage.getItem(mobilePopupKey) === 'true';
+                    
+                    // Hiển thị popup nếu:
+                    // 1. Chưa được click hoặc
+                    // 2. Đã được click và đã load trang 10 lần
+                    if (!isPopupClicked || (isPopupClicked && pageLoads % 10 === 0)) {
+                        if (window.innerWidth <= 768 && mobilePopup) {
+                            mobilePopup.style.display = 'block';
+                        }
+                    }
+
+                    // Hàm xử lý click popup
+                    function handlePopupClick() {
+                        window.open(redirectUrl, "_blank");
+                        mobilePopup.style.display = 'none';
+                        localStorage.setItem(mobilePopupKey, 'true');
+                        localStorage.setItem(pageLoadCountKey, '0');
+                    }
+
+                    // Gán click cho mobile popup và close icon
+                    if (mobilePopup) {
+                        // Click vào popup
+                        mobilePopup.addEventListener('click', function(e) {
+                            // Nếu click vào close icon thì không xử lý ở đây
+                            if (!e.target.closest('.close-icon')) {
+                                handlePopupClick();
+                            }
+                        });
+
+                        // Click vào close icon
+                        const closeIcon = mobilePopup.querySelector('.close-icon');
+                        if (closeIcon) {
+                            closeIcon.addEventListener('click', function(e) {
+                                e.stopPropagation(); // Ngăn event bubble lên popup
+                                handlePopupClick();
+                            });
+                        }
                     }
                     <?php endif; ?>
 
