@@ -14,10 +14,10 @@ jobs:
       - name: Compile CSS from SCSS files
         uses: gha-utilities/sass-build@v0.4.7
         with:
-          source: assets/sass/style.scss
+          source: assets/sass/main.scss
           destination: style.css
 
-      - name: 📂 Sync files TuSacTruyen
+      - name: 📂 Sync files phonglinhtran
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: 103.124.95.168
