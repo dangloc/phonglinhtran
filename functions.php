@@ -1818,13 +1818,22 @@ add_action('pre_get_posts', 'filter_chuong_truyen_by_story');
 
 // Đăng ký script cho chapter count và latest chapter
 function enqueue_chapter_count_script() {
-    wp_enqueue_script('chapter-count', get_template_directory_uri() . '/assets/js/chapter-count.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('latest-chapter', get_template_directory_uri() . '/assets/js/latest-chapter.js', array('jquery'), '1.0', true);
-    wp_localize_script('chapter-count', 'ajax_object', array(
+    // Enqueue jQuery first
+    wp_enqueue_script('jquery');
+    
+    // Enqueue chapter count script
+    wp_enqueue_script('chapter-count', get_template_directory_uri() . '/assets/js/chapter-count.js', array('jquery'), time(), true);
+    
+    // Enqueue latest chapter script
+    wp_enqueue_script('latest-chapter', get_template_directory_uri() . '/assets/js/latest-chapter.js', array('jquery'), time(), true);
+    
+    // Localize script with unique names
+    wp_localize_script('chapter-count', 'chapter_count_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('chapter_count_nonce')
     ));
-    wp_localize_script('latest-chapter', 'ajax_object', array(
+    
+    wp_localize_script('latest-chapter', 'latest_chapter_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('chapter_count_nonce')
     ));
