@@ -24,11 +24,24 @@ function create_reading_history_table() {
     ) $charset_collate;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+    $result = dbDelta($sql);
+    
+    // Log table creation result
+    error_log('Tạo bảng reading_history:');
+    error_log(print_r($result, true));
+    
+    // Verify table exists
+    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
+    error_log('Bảng reading_history tồn tại: ' . ($table_exists ? 'Có' : 'Không'));
+    
+    if ($table_exists) {
+        // Check table structure
+        $columns = $wpdb->get_results("DESCRIBE $table_name");
+        error_log('Cấu trúc bảng reading_history:');
+        error_log(print_r($columns, true));
+    }
 }
 add_action('after_switch_theme', 'create_reading_history_table');
-
-// Thêm hook để tạo bảng khi theme được kích hoạt
 add_action('init', 'create_reading_history_table');
 
 // Save reading history
