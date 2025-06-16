@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.category-slider', {
         slidesPerView: 8,
         loop: true,
-        speed: 5000, // thời gian chạy hết 1 vòng (ms)
+        speed: 6000, // thời gian chạy hết 1 vòng (ms)
         autoplay: {
             delay: 0, // để chạy liên tục
             disableOnInteraction: false,
