@@ -12,7 +12,8 @@ if (!is_user_logged_in()) {
 }
 
 $user_id = get_current_user_id();
-$reading_history = get_user_reading_history($user_id);
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$reading_history = get_user_reading_history($user_id, 12, $paged); // Limit to 12 items per page
 ?>
 
 <main id="primary" class="site-main">
@@ -63,19 +64,66 @@ $reading_history = get_user_reading_history($user_id);
                                     <a href="<?php echo get_permalink($story->ID); ?>" class="btn btn-outline-primary">
                                         <?php esc_html_e('Xem truyện', 'commicpro'); ?>
                                     </a>
+                                    <button class="btn btn-outline-danger delete-history" data-history-id="<?php echo $history->id; ?>">
+                                        <?php esc_html_e('Xóa', 'commicpro'); ?>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
+                
+                <div class="col-12 mt-4">
+                    <?php
+                    $total_items = get_user_reading_history_count($user_id);
+                    $total_pages = ceil($total_items / 12);
+                    if ($total_pages > 1) {
+                        echo '<nav aria-label="Page navigation"><ul class="pagination justify-content-center">';
+                        for ($i = 1; $i <= $total_pages; $i++) {
+                            $active = $i == $paged ? ' active' : '';
+                            echo '<li class="page-item' . $active . '"><a class="page-link" href="' . get_pagenum_link($i) . '">' . $i . '</a></li>';
+                        }
+                        echo '</ul></nav>';
+                    }
+                    ?>
+                </div>
             <?php else : ?>
                 <div class="col-12">
-                    <p><?php esc_html_e('Bạn chưa đọc truyện nào.', 'commicpro'); ?></p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <?php esc_html_e('Bạn chưa đọc truyện nào.', 'commicpro'); ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </main>
+
+<script>
+jQuery(document).ready(function($) {
+    $('.delete-history').on('click', function() {
+        if (confirm('<?php esc_html_e('Bạn có chắc chắn muốn xóa lịch sử đọc này?', 'commicpro'); ?>')) {
+            var historyId = $(this).data('history-id');
+            $.ajax({
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                type: 'POST',
+                data: {
+                    action: 'delete_reading_history',
+                    history_id: historyId,
+                    nonce: '<?php echo wp_create_nonce('delete_reading_history_nonce'); ?>'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.data);
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
 
 <?php
 get_footer(); 

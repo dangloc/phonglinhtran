@@ -73,9 +73,11 @@ function save_reading_history($user_id, $story_id, $chapter_id, $chapter_number)
 }
 
 // Get user's reading history
-function get_user_reading_history($user_id, $limit = 10) {
+function get_user_reading_history($user_id, $limit = 12, $paged = 1) {
     global $wpdb;
     $table_name = $wpdb->prefix . 'reading_history';
+    
+    $offset = ($paged - 1) * $limit;
     
     return $wpdb->get_results($wpdb->prepare(
         "SELECT rh.*, 
@@ -86,11 +88,60 @@ function get_user_reading_history($user_id, $limit = 10) {
         JOIN {$wpdb->posts} c ON rh.chapter_id = c.ID
         WHERE rh.user_id = %d 
         ORDER BY rh.last_read DESC 
-        LIMIT %d",
+        LIMIT %d OFFSET %d",
         $user_id,
-        $limit
+        $limit,
+        $offset
     ));
 }
+
+// Get total count of reading history items
+function get_user_reading_history_count($user_id) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'reading_history';
+    
+    return (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d",
+        $user_id
+    ));
+}
+
+// Delete reading history item
+function delete_reading_history_item($history_id, $user_id) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'reading_history';
+    
+    return $wpdb->delete(
+        $table_name,
+        array(
+            'id' => $history_id,
+            'user_id' => $user_id
+        ),
+        array('%d', '%d')
+    );
+}
+
+// Handle AJAX delete reading history
+function handle_delete_reading_history() {
+    check_ajax_referer('delete_reading_history_nonce', 'nonce');
+    
+    $history_id = intval($_POST['history_id']);
+    $user_id = get_current_user_id();
+    
+    if (!$user_id) {
+        wp_send_json_error('Bạn cần đăng nhập để thực hiện thao tác này');
+        return;
+    }
+    
+    $result = delete_reading_history_item($history_id, $user_id);
+    
+    if ($result) {
+        wp_send_json_success('Xóa lịch sử đọc thành công');
+    } else {
+        wp_send_json_error('Có lỗi xảy ra khi xóa lịch sử đọc');
+    }
+}
+add_action('wp_ajax_delete_reading_history', 'handle_delete_reading_history');
 
 // Add reading history to single chapter page
 function track_chapter_reading() {
