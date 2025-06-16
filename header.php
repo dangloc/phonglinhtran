@@ -20,7 +20,7 @@
 
 	<?php wp_head(); ?>
 
-	 <script>
+	 <!-- <script>
 		document.addEventListener('DOMContentLoaded', function() {
 			// Prevent text selection
 			document.addEventListener('selectstart', function(e) {
@@ -131,7 +131,7 @@
 				});
 			})();
 		});
-	</script>
+	</script> -->
 </head>
 
 <body <?php body_class(); ?>>
@@ -161,10 +161,8 @@
 					<div class="user-info dropdown">
 						<!-- Trigger dropdown on hover -->
 						<div class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<a href="<?php echo esc_url( get_author_posts_url( $current_user->ID ) ); ?>">
 								<?php echo get_avatar( $current_user->ID, 32 ); ?>
-								<span class="mx-2"><?php echo esc_html( $current_user->user_login ); ?></span>
-							</a>
+								<span class="mx-2 name-user"><?php echo esc_html( $current_user->user_login ); ?></span>
 						</div>
 
 						<!-- Dropdown menu -->

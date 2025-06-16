@@ -14,32 +14,34 @@
             height: 100%;
         }
 
-        .tien-nu{
+        .ky-chu-vo-danh,
+        .tan-linh-ky-chu,
+        .ky-chu-thuc-tinh{
             top: 4px;
             left: 1px;
         }
 
-        .ngoc-nu{
+        .ky-chu-phong-linh-hoa{
             top: 4px;
             left: -2px;
         }
 
-        .tien-co{
+        .thong-linh-phong-linh-tran{
             top: -31px;
             left: 0;
         }
 
-        .huyen-nu{
+        .ky-chu-toi-thuong{
             top: -20px;
             left: 0;
         }
 
-        .than-nu{
+        .linh-vuong{
             top: -20px;
             left: 0;
         }
 
-        .thien-ton{
+        .linh-vuong-mong-canh{
             transform: scale(1.5);
             top: 10px;
             left: 0;
@@ -144,16 +146,16 @@
     background: transparent;
     padding: 0 8px;
 
-    &--ngoc-nu {
+    &--ky-chu-vo-danh,
+    &--tan-linh-ky-chu,
+    &--ky-chu-thuc-tinh {
         font-family: $font-secondary;
-        color: #0394fc;
+        color: #0394fc; /* Color of tien-nu */
         overflow: hidden;
         transition: 0.5s;
-        // if want reflection
-        // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
     
         &:hover {
-          background: #0394fc;
+          background: #0394fc; /* Color of tien-nu */
           color: #050801;
           box-shadow: 0 0 5px #0394fc, 0 0 25px #0394fc, 0 0 50px #0394fc,
             0 0 200px #0394fc;
@@ -168,7 +170,66 @@
     
         span {
           position: absolute;
-          background: linear-gradient(180deg, transparent, #0394fc);
+          background: linear-gradient(180deg, transparent, #0394fc); /* Color of tien-nu */
+    
+          &:nth-child(1) {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            animation: borderAnimation1 1s linear infinite;
+          }
+          &:nth-child(2) {
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            animation: borderAnimation2 1s linear infinite;
+            animation-delay: 0.25s;
+          }
+          &:nth-child(3) {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            animation: borderAnimation3 1s linear infinite;
+          }
+          &:nth-child(4) {
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            animation: borderAnimation4 2s linear infinite;
+            animation-delay: 0.25s;
+          }
+        }
+    }
+
+    &--ky-chu-phong-linh-hoa {
+        font-family: $font-secondary;
+        color: #0394fc; /* Color of ngoc-nu */
+        overflow: hidden;
+        transition: 0.5s;
+        // if want reflection
+        // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+    
+        &:hover {
+          background: #0394fc; /* Color of ngoc-nu */
+          color: #050801;
+          box-shadow: 0 0 5px #0394fc, 0 0 25px #0394fc, 0 0 50px #0394fc,
+            0 0 200px #0394fc;
+        }
+        &::before {
+          content: "";
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          bottom: 2px;
+        }
+    
+        span {
+          position: absolute;
+          background: linear-gradient(180deg, transparent, #0394fc); /* Color of ngoc-nu */
     
           &:nth-child(1) {
             top: 0;
@@ -239,16 +300,16 @@
         }
     }
 
-    &--tien-co {
+    &--thong-linh-phong-linh-tran {
         font-family: $font-secondary;
-        color: #3103fc;
+        color: #3103fc; /* Color of tien-co */
         overflow: hidden;
         transition: 0.5s;
         // if want reflection
         // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
     
         &:hover {
-          background: #3103fc;
+          background: #3103fc; /* Color of tien-co */
           color: #050801;
           box-shadow: 0 0 5px #3103fc, 0 0 25px #3103fc, 0 0 50px #3103fc,
             0 0 200px #3103fc;
@@ -263,7 +324,7 @@
     
         span {
           position: absolute;
-          background: linear-gradient(180deg, transparent, #3103fc);
+          background: linear-gradient(180deg, transparent, #3103fc); /* Color of tien-co */
     
           &:nth-child(1) {
             top: 0;
@@ -271,15 +332,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation1 1s linear infinite;
-    
-            @keyframes borderAnimation1 {
-              0% {
-                transform: translateX(-100%);
-              }
-              100% {
-                transform: translateX(100%);
-              }
-            }
           }
           &:nth-child(2) {
             top: 0;
@@ -288,15 +340,6 @@
             height: 100%;
             animation: borderAnimation2 1s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation2 {
-              0% {
-                transform: translateY(-100%);
-              }
-              100% {
-                transform: translateY(100%);
-              }
-            }
           }
           &:nth-child(3) {
             bottom: 0;
@@ -304,15 +347,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation3 1s linear infinite;
-    
-            @keyframes borderAnimation3 {
-              0% {
-                transform: translateX(100%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
-            }
           }
           &:nth-child(4) {
             top: 0;
@@ -321,29 +355,20 @@
             height: 100%;
             animation: borderAnimation4 2s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation4 {
-              0% {
-                transform: translateY(100%);
-              }
-              100% {
-                transform: translateY(-100%);
-              }
-            }
           }
         }
     }
 
-    &--huyen-nu {
+    &--ky-chu-toi-thuong {
         font-family: $font-secondary;
-        color: #8c03fc;
+        color: #8c03fc; /* Color of huyen-nu */
         overflow: hidden;
         transition: 0.5s;
         // if want reflection
         // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
     
         &:hover {
-          background: #8c03fc;
+          background: #8c03fc; /* Color of huyen-nu */
           color: #050801;
           box-shadow: 0 0 5px #8c03fc, 0 0 25px #8c03fc, 0 0 50px #8c03fc,
             0 0 200px #8c03fc;
@@ -358,7 +383,7 @@
     
         span {
           position: absolute;
-          background: linear-gradient(180deg, transparent, #8c03fc);
+          background: linear-gradient(180deg, transparent, #8c03fc); /* Color of huyen-nu */
     
           &:nth-child(1) {
             top: 0;
@@ -366,15 +391,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation1 1s linear infinite;
-    
-            @keyframes borderAnimation1 {
-              0% {
-                transform: translateX(-100%);
-              }
-              100% {
-                transform: translateX(100%);
-              }
-            }
           }
           &:nth-child(2) {
             top: 0;
@@ -383,15 +399,6 @@
             height: 100%;
             animation: borderAnimation2 1s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation2 {
-              0% {
-                transform: translateY(-100%);
-              }
-              100% {
-                transform: translateY(100%);
-              }
-            }
           }
           &:nth-child(3) {
             bottom: 0;
@@ -399,15 +406,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation3 1s linear infinite;
-    
-            @keyframes borderAnimation3 {
-              0% {
-                transform: translateX(100%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
-            }
           }
           &:nth-child(4) {
             top: 0;
@@ -416,29 +414,20 @@
             height: 100%;
             animation: borderAnimation4 2s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation4 {
-              0% {
-                transform: translateY(100%);
-              }
-              100% {
-                transform: translateY(-100%);
-              }
-            }
           }
         }
     }
 
-    &--than-nu {
+    &--linh-vuong {
         font-family: $font-secondary;
-        color: #f003fc;
+        color: #f003fc; /* Color of than-nu */
         overflow: hidden;
         transition: 0.5s;
         // if want reflection
         // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
     
         &:hover {
-          background: #f003fc;
+          background: #f003fc; /* Color of than-nu */
           color: #050801;
           box-shadow: 0 0 5px #f003fc, 0 0 25px #f003fc, 0 0 50px #f003fc,
             0 0 200px #f003fc;
@@ -453,7 +442,7 @@
     
         span {
           position: absolute;
-          background: linear-gradient(180deg, transparent, #f003fc);
+          background: linear-gradient(180deg, transparent, #f003fc); /* Color of than-nu */
     
           &:nth-child(1) {
             top: 0;
@@ -461,15 +450,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation1 1s linear infinite;
-    
-            @keyframes borderAnimation1 {
-              0% {
-                transform: translateX(-100%);
-              }
-              100% {
-                transform: translateX(100%);
-              }
-            }
           }
           &:nth-child(2) {
             top: 0;
@@ -478,15 +458,6 @@
             height: 100%;
             animation: borderAnimation2 1s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation2 {
-              0% {
-                transform: translateY(-100%);
-              }
-              100% {
-                transform: translateY(100%);
-              }
-            }
           }
           &:nth-child(3) {
             bottom: 0;
@@ -494,15 +465,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation3 1s linear infinite;
-    
-            @keyframes borderAnimation3 {
-              0% {
-                transform: translateX(100%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
-            }
           }
           &:nth-child(4) {
             top: 0;
@@ -511,29 +473,20 @@
             height: 100%;
             animation: borderAnimation4 2s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation4 {
-              0% {
-                transform: translateY(100%);
-              }
-              100% {
-                transform: translateY(-100%);
-              }
-            }
           }
         }
     }
 
-    &--thien-ton {
+    &--linh-vuong-mong-canh {
         font-family: $font-secondary;
-        color: #fc0303;
+        color: #fc0303; /* Color of thien-ton */
         overflow: hidden;
         transition: 0.5s;
         // if want reflection
         // -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
     
         &:hover {
-          background: #fc0303;
+          background: #fc0303; /* Color of thien-ton */
           color: #050801;
           box-shadow: 0 0 5px #fc0303, 0 0 25px #fc0303, 0 0 50px #fc0303,
             0 0 200px #fc0303;
@@ -548,7 +501,7 @@
     
         span {
           position: absolute;
-          background: linear-gradient(180deg, transparent, #fc0303);
+          background: linear-gradient(180deg, transparent, #fc0303); /* Color of thien-ton */
     
           &:nth-child(1) {
             top: 0;
@@ -556,15 +509,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation1 1s linear infinite;
-    
-            @keyframes borderAnimation1 {
-              0% {
-                transform: translateX(-100%);
-              }
-              100% {
-                transform: translateX(100%);
-              }
-            }
           }
           &:nth-child(2) {
             top: 0;
@@ -573,15 +517,6 @@
             height: 100%;
             animation: borderAnimation2 1s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation2 {
-              0% {
-                transform: translateY(-100%);
-              }
-              100% {
-                transform: translateY(100%);
-              }
-            }
           }
           &:nth-child(3) {
             bottom: 0;
@@ -589,15 +524,6 @@
             width: 100%;
             height: 3px;
             animation: borderAnimation3 1s linear infinite;
-    
-            @keyframes borderAnimation3 {
-              0% {
-                transform: translateX(100%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
-            }
           }
           &:nth-child(4) {
             top: 0;
@@ -606,15 +532,6 @@
             height: 100%;
             animation: borderAnimation4 2s linear infinite;
             animation-delay: 0.25s;
-    
-            @keyframes borderAnimation4 {
-              0% {
-                transform: translateY(100%);
-              }
-              100% {
-                transform: translateY(-100%);
-              }
-            }
           }
         }
     }

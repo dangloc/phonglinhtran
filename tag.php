@@ -42,35 +42,43 @@ $custom_query = new WP_Query($args);
         </header>
 
         <div class="row">
-            <?php if ($custom_query->have_posts()) : ?>
-                <?php while ($custom_query->have_posts()) : $custom_query->the_post(); ?>
-                <?php get_template_part( 'template-parts/home/item-card' ); ?>
-                <?php endwhile; ?>
-
-                <div class="col-12">
-                    <?php
-                    // Custom pagination
-                    $big = 999999999;
-                    echo '<div class="pagination justify-content-center">';
-                    echo paginate_links(array(
-                        'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-                        'format' => '?paged=%#%',
-                        'current' => max(1, get_query_var('paged')),
-                        'total' => $custom_query->max_num_pages,
-                        'prev_text' => __('Trước', 'commicpro'),
-                        'next_text' => __('Sau', 'commicpro'),
-                        'mid_size' => 2
-                    ));
-                    echo '</div>';
-                    ?>
+            <div class="col-lg-9">
+                <div class="row">
+                    <?php if ($custom_query->have_posts()) : ?>
+                        <?php while ($custom_query->have_posts()) : $custom_query->the_post(); ?>
+                        <?php get_template_part( 'template-parts/home/item-card' ); ?>
+                        <?php endwhile; ?>
+        
+                        <div class="col-12">
+                            <?php
+                            // Custom pagination
+                            $big = 999999999;
+                            echo '<div class="pagination justify-content-center">';
+                            echo paginate_links(array(
+                                'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+                                'format' => '?paged=%#%',
+                                'current' => max(1, get_query_var('paged')),
+                                'total' => $custom_query->max_num_pages,
+                                'prev_text' => __('Trước', 'commicpro'),
+                                'next_text' => __('Sau', 'commicpro'),
+                                'mid_size' => 2
+                            ));
+                            echo '</div>';
+                            ?>
+                        </div>
+        
+                    <?php else : ?>
+                        <div class="col-12">
+                            <p><?php esc_html_e('Không tìm thấy truyện nào với tag này.', 'commicpro'); ?></p>
+                        </div>
+                    <?php endif; ?>
                 </div>
-
-            <?php else : ?>
-                <div class="col-12">
-                    <p><?php esc_html_e('Không tìm thấy truyện nào với tag này.', 'commicpro'); ?></p>
-                </div>
-            <?php endif; ?>
+            </div>
+            <div class="col-lg-3">
+					<?php get_template_part( 'sidebar' );  ?>
+			</div>
         </div>
+
     </div>
 </main>
 

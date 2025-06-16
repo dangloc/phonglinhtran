@@ -18,9 +18,6 @@ $args = array(
 
 $query = new WP_Query($args);
 
-// Debug: Check query results
-echo '<!-- Debug: Found ' . $query->found_posts . ' posts -->';
-
 if ($query->have_posts()) :
 ?>
 <section class="section-hero-banner py-5">
@@ -28,16 +25,26 @@ if ($query->have_posts()) :
         <div class="bg-overlay"></div>
     </div>
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <div class="d-none d-md-block">
-                    <div class="swiper swiper-story-content swiper-fade">
-                        <div class="swiper-wrapper">
-                            <?php
-                            while ($query->have_posts()) :
-                                $query->the_post();
-                                ?>
-                                <div class="swiper-slide">
+                <div class="carousel">
+                    <?php
+                    while ($query->have_posts()) :
+                        $query->the_post();
+                        ?>
+                        <div class="carousel-cell">
+                            <div class="row h-100">
+                                <div class="col-lg-4 h-100">
+                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="h-100 d-block swiper-slide-a ratio-3x4 rounded-4 overflow-hidden">
+                                        <?php 
+                                        $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                                        ?>
+                                        <img class="attachment-medium img-custom-banner size-medium wp-post-image w-100 h-100" 
+                                            src="<?php echo $featured_img_url ?>" 
+                                            alt="<?php the_title_attribute(); ?>" 
+                                            onerror="this.src='<?php echo get_template_directory_uri(); ?>/assets/images/icon-book.png'"
+                                        />
+                                    </a>
+                                </div>
+                                <div class="col-lg-8 h-100 py-3">
                                     <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
                                         <h3 class="fs-2 text-capitalize font-secondary-title"><?php the_title(); ?></h3>
                                     </a>
@@ -47,59 +54,11 @@ if ($query->have_posts()) :
                                     <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="custom-btn mt-3">
                                         <span><?php esc_html_e('Đọc Truyện', 'commicpro'); ?></span>
                                     </a>
-
                                 </div>
-                            <?php endwhile; ?>
+                            </div>
                         </div>
-                    </div>
+                    <?php endwhile; ?>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="overflow-hidden">
-                    <div class="swiper swiper-story-thumb swiper-coverflow swiper-3d">
-                        <div class="swiper-wrapper">
-                            <?php
-                            $query->rewind_posts();
-                            while ($query->have_posts()) :
-                                $query->the_post();
-                                ?>
-                                <div class="swiper-slide" data-url="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>">
-                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="d-block swiper-slide-a ratio ratio-3x4 rounded-4 overflow-hidden">
-                                        <?php the_post_thumbnail('medium', array('class' => 'attachment-medium size-medium wp-post-image')); ?>
-                                    </a>
-                                </div>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="d-block d-md-none">
-                    <div class="swiper swiper-story-content swiper-fade">
-                        <div class="swiper-wrapper">
-                            <?php
-                            while ($query->have_posts()) :
-                                $query->the_post();
-                                ?>
-                                <div class="swiper-slide">
-                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
-                                        <h3 class="fs-2 text-capitalize font-secondary-title"><?php the_title(); ?></h3>
-                                    </a>
-                                    <div class="synopsis line-clamp line-clamp-3">
-                                        <?php the_excerpt(); ?>
-                                    </div>
-                                    <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="custom-btn mt-3">
-                                        <span><?php esc_html_e('Đọc Truyện', 'commicpro'); ?></span>
-                                    </a>
-
-                                </div>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 <?php

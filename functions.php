@@ -154,8 +154,14 @@ function commicpro_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	// Flickity for homepage only
+	if (is_front_page()) {
+		wp_enqueue_style('flickity-css', get_template_directory_uri() . '/assets/libs/flickity/flickity.css', array(), '2.4.0');
+		wp_enqueue_script('flickity-js', get_template_directory_uri() . '/assets/libs/flickity/flickity.pkgd.min.js', array('jquery'), '2.4.0', true);
+	}
 }
-add_action( 'wp_enqueue_scripts', 'commicpro_scripts' );
+add_action('wp_enqueue_scripts', 'commicpro_scripts');
 
 /**
  * Implement the Custom Header feature.
@@ -983,7 +989,7 @@ function register_my_menus_footer() {
 add_action( 'init', 'register_my_menus_footer' );
 
 function enqueue_video_handle_script() {
-    if (is_front_page() || is_home()) {
+    if (is_front_page() || is_home() ||  is_post_type_archive('truyen_chu') || is_tax('trang_thai') || is_tax('the_loai') || is_tax('tac_gia') || is_tag()) {
         // Swiper CSS
         wp_enqueue_style(
             'swiper-css',
@@ -1809,3 +1815,21 @@ function filter_chuong_truyen_by_story($query) {
     }
 }
 add_action('pre_get_posts', 'filter_chuong_truyen_by_story');
+
+// Đăng ký script cho chapter count và latest chapter
+function enqueue_chapter_count_script() {
+    wp_enqueue_script('chapter-count', get_template_directory_uri() . '/assets/js/chapter-count.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('latest-chapter', get_template_directory_uri() . '/assets/js/latest-chapter.js', array('jquery'), '1.0', true);
+    wp_localize_script('chapter-count', 'ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('chapter_count_nonce')
+    ));
+    wp_localize_script('latest-chapter', 'ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('chapter_count_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_chapter_count_script');
+
+// Include AJAX handler
+require_once get_template_directory() . '/ajax-handler.php';

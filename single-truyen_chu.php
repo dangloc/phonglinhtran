@@ -12,13 +12,16 @@ get_header();
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <div class="row">
                     <div class="col-md-4">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="card-custom-single-truyen mb-4">
-                                <?php the_post_thumbnail('large', ['class' => 'img-fluid']); ?>
-                            </div>
-                        <?php endif; ?>
-
-                       
+                        <div class="card-custom-single-truyen mb-4">
+                            <?php 
+                            $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                            ?>
+                            <img class="img-fluid" 
+                                src="<?php echo $featured_img_url ? $featured_img_url : get_template_directory_uri() . '/assets/images/icon-book.png'; ?>" 
+                                alt="<?php the_title_attribute(); ?>" 
+                                onerror="this.src='<?php echo get_template_directory_uri(); ?>/assets/images/icon-book.png'"
+                            />
+                        </div>
                     </div>
 
                     <div class="col-md-8">
@@ -450,7 +453,7 @@ get_header();
                 if ($related_query->have_posts()) : ?>
                     <div class="related-posts mt-5">
                         <h2 class="h3 mb-4">Truyện liên quan</h2>
-                        <div class="row">
+                        <div class="row latest-chapter-container">
                             <?php while ($related_query->have_posts()) : $related_query->the_post(); ?>
                             <?php get_template_part( 'template-parts/home/item-card' ); ?>
                             <?php endwhile; ?>

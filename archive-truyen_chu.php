@@ -13,21 +13,30 @@ get_header();
         </header>
 
         <div class="row">
-            <?php if (have_posts()) : ?>
-                <?php while (have_posts()) : the_post(); ?>
-                   <?php get_template_part( 'template-parts/home/item-card' ); ?>
-                <?php endwhile; ?>
-
-                <div class="col-12">
-                    <?php custom_pagination(); ?>
+            <div class="col-lg-9">
+                <div class="row latest-chapter-container">
+                    <?php if (have_posts()) : ?>
+                        <?php while (have_posts()) : the_post(); ?>
+                           <?php get_template_part( 'template-parts/home/item-card' ); ?>
+                        <?php endwhile; ?>
+        
+                        <div class="col-12">
+                            <?php custom_pagination(); ?>
+                        </div>
+        
+                    <?php else : ?>
+                        <div class="col-12">
+                            <p><?php esc_html_e('Không tìm thấy truyện nào.', 'commicpro'); ?></p>
+                        </div>
+                    <?php endif; ?>
                 </div>
+            </div>
 
-            <?php else : ?>
-                <div class="col-12">
-                    <p><?php esc_html_e('Không tìm thấy truyện nào.', 'commicpro'); ?></p>
-                </div>
-            <?php endif; ?>
+        	<div class="col-lg-3">
+					<?php get_template_part( 'sidebar' );  ?>
+			</div>
         </div>
+
     </div>
 </main>
 

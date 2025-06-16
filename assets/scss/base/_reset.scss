@@ -16,7 +16,8 @@ body {
   font-size: $font-size-base;
   line-height: $line-height-base;
   color: $white;
-  background-color: $background-color;
+  margin: 0;
+  background: url(assets/images/bg_dark.gif) repeat;
 }
 
 a {

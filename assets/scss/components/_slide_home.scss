@@ -1,8 +1,10 @@
 .section-slider{
     .section-title{
-        font-size: 24px;
+        font-size: 20px;
         margin-bottom: 12px;
         display: flex;
+        font-weight: 600;
+        text-transform: uppercase;
         justify-content: space-between;
         a{
             font-size: 14px;
@@ -29,7 +31,7 @@
         }
 
         img{
-            height: 320px;
+            height: 260px;
             width: 100%;
             border-radius: 12px;
             object-fit: cover;
@@ -40,4 +42,16 @@
             }
         }
      }
+}
+
+.section-title{
+        font-size: 20px;
+        margin-bottom: 12px;
+        display: flex;
+        font-weight: 600;
+        text-transform: uppercase;
+        justify-content: space-between;
+        a{
+            font-size: 14px;
+        }
 }

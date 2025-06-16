@@ -50,9 +50,19 @@
           color: $primary-color;
 
           .avatar{
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            box-shadow: rgba(225, 225, 225, 0.16) 0px 0px 10px, rgba(225, 225, 225, 0.23) 0px -4px 10px;
+            border: 1px dotted #fff;
+          }
+
+          .name-user{
+            font-size: 20px;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #fff;
+            text-shadow: 1px 1px 4px #FFFFFF;
           }
         }
       }

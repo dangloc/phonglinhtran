@@ -14,13 +14,46 @@ $title = get_the_title($post);
 $thumb = get_the_post_thumbnail($post->ID, 'medium', ['class' => 'item-thumb']);
 $excerpt = get_the_excerpt($post);
 ?>
-                    <div class="col-md-2 col-6 mb-4">
-                        <article id="post-<?php the_ID(); ?>" <?php post_class('card-custom'); ?>>
-                            <?php if (has_post_thumbnail()) : ?>
-                                <a href="<?php the_permalink(); ?>" class="card-img-top">
-                                    <?php the_post_thumbnail('medium', ['class' => 'img-fluid']); ?>
-                                </a>
-                            <?php endif; ?>
+                    <div class="col-md-3 col-6 mb-4">
+                        <article id="post-<?php the_ID(); ?>" <?php post_class('card-custom'); ?> data-truyen-id="<?php echo get_the_ID(); ?>">
+                            <a href="<?php the_permalink(); ?>" class="card-img-top">
+                                <?php 
+                                $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                                ?>
+                                <img class="img-fluid" 
+                                    src="<?php echo $featured_img_url ? $featured_img_url : get_template_directory_uri() . '/assets/images/icon-book.png'; ?>" 
+                                    alt="<?php the_title_attribute(); ?>" 
+                                    onerror="this.src='<?php echo get_template_directory_uri(); ?>/assets/images/icon-book.png'"
+                                />
+                            </a>
+                            <?php $tac_gia = get_the_terms(get_the_ID(), 'trang_thai'); ?>
+                            <?php 
+                            $trang_thai = get_the_terms(get_the_ID(), 'trang_thai');
+                            $is_completed = false;
+                            if ($trang_thai && !is_wp_error($trang_thai)) {
+                                foreach ($trang_thai as $term) {
+                                    if ($term->slug === 'da-hoan-thanh') {
+                                        $is_completed = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            ?>
+                            <p class="count-port">
+                                <?php
+                                if($is_completed){
+                                    ?>
+                                    Full
+                                    <?php
+                                }else{
+                                    ?>
+                                    <small class="text-muted-custom chapter-count" data-truyen-id="<?php echo get_the_ID(); ?>">
+                                        <?php echo $is_completed ? 'Full' : '...'; ?>
+                                    </small>
+                                    <?php
+                                }
+                                ?>
+                            </p>
                             
                             <div class="card-body-custom">
                                 <h4 class="card-title-custom">
@@ -56,6 +89,12 @@ $excerpt = get_the_excerpt($post);
                                         </small>
                                     </p>
                                 <?php endif; ?>
+
+                                <p class="mb-1 latest-chapter-info">
+                                    <small class="text-muted-custom">
+                                        <span class="latest-chapter">...</span>
+                                    </small>
+                                </p>
                             </div>
                         </article>
                     </div>

@@ -1,18 +1,23 @@
 <?php
-// template-parts/home/slider-popular.php
-$popular_query = new WP_Query([
-    'post_type' => 'truyen_chu',
-    'posts_per_page' => 6,
-    'meta_key' => 'view_count', // Đúng tên field ACF
-    'orderby' => 'meta_value_num',
-    'order' => 'DESC'
-]);
-if ($popular_query->have_posts()) : ?>
+// template-parts/home/slider-taxonomy-3.php
+$term = get_term_by('slug', 'linh-di', 'the_loai');
+
+if ($term && !is_wp_error($term)) :
+    $tax_query = new WP_Query([
+        'post_type' => 'truyen_chu',
+        'posts_per_page' => 6,
+        'tax_query' => [[
+            'taxonomy' => 'the_loai',
+            'field' => 'term_id',
+            'terms' => $term->term_id
+        ]]
+    ]);
+    if ($tax_query->have_posts()) : ?>
 <section class="section-slider py-5">
-    <div class="section-title"><span>Truyện xem nhiều</span> <a href="<?php echo get_post_type_archive_link('truyen_chu'); ?>">Xem thêm >></a></div>
-    <div class="swiper swiper-popular">
+    <div class="section-title"><span><?php echo esc_html($term->name); ?></span> <a href="<?php echo get_term_link($term); ?>">Xem thêm >></a></div>
+    <div class="swiper swiper-tax3">
         <div class="swiper-wrapper">
-            <?php while ($popular_query->have_posts()) : $popular_query->the_post(); ?>
+            <?php while ($tax_query->have_posts()) : $tax_query->the_post(); ?>
                 <div class="swiper-slide" data-truyen-id="<?php echo get_the_ID(); ?>">
                     <a href="<?php the_permalink(); ?>">
                         <?php 
@@ -23,7 +28,7 @@ if ($popular_query->have_posts()) : ?>
                             onerror="this.src='<?php echo get_template_directory_uri(); ?>/assets/images/icon-book.png'"
                         />
                         <div class="slide-title"><?php the_title(); ?></div>
-                            <?php 
+                        <?php 
                             $trang_thai = get_the_terms(get_the_ID(), 'trang_thai');
                             $is_completed = false;
                             if ($trang_thai && !is_wp_error($trang_thai)) {
@@ -56,4 +61,4 @@ if ($popular_query->have_posts()) : ?>
         </div>
     </div>
 </section>
-<?php endif; wp_reset_postdata(); ?>
+<?php endif; wp_reset_postdata(); endif; ?> 

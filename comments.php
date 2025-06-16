@@ -106,27 +106,33 @@ function commicpro_comment_callback($comment, $args, $depth) {
 						<?php if ($vip_name): ?>
 							<button class="btn-cus-vip btn-cus-vip--sm <?php
 								switch ($vip_name) {
-									case 'Tiên nữ':
-										echo 'btn-cus-vip--tien-nu';
-										break;
-									case 'Ngọc nữ':
-										echo 'btn-cus-vip--ngoc-nu';
-										break;
-									case 'Tiên cô':
-										echo 'btn-cus-vip--tien-co';
-										break;
-									case 'Huyền nữ':
-										echo 'btn-cus-vip--huyen-nu';
-										break;
-									case 'Thần nữ':
-										echo 'btn-cus-vip--than-nu';
-										break;
-									case 'Thiên tôn':
-										echo 'btn-cus-vip--thien-ton';
-										break;
-									default:
-										echo '';
-										break;
+                                    case 'Ký Chủ Vô Danh':
+                                        echo 'btn-cus-vip--ky-chu-vo-danh';
+                                        break;
+                                    case 'Tân Linh Ký Chủ':
+                                        echo 'btn-cus-vip--tan-linh-ky-chu';
+                                        break;
+                                    case 'Ký Chủ Thức Tỉnh':
+                                        echo 'btn-cus-vip--ky-chu-thuc-tinh';
+                                        break;
+                                    case 'Ký Chủ Phong Linh Hóa':
+                                        echo 'btn-cus-vip--ky-chu-phong-linh-hoa';
+                                        break;
+                                    case 'Thống Lĩnh Phong Linh Trấn':
+                                        echo 'btn-cus-vip--thong-linh-phong-linh-tran';
+                                        break;
+                                    case 'Ký Chủ Tối Thượng':
+                                        echo 'btn-cus-vip--ky-chu-toi-thuong';
+                                        break;
+                                    case 'Linh Vương':
+                                        echo 'btn-cus-vip--linh-vuong';
+                                        break;
+                                    case 'Linh Vương Mộng Cảnh':
+                                        echo 'btn-cus-vip--linh-vuong-mong-canh';
+                                        break;
+                                    default:
+                                        echo '';
+                                        break;
 								}
 							?>">
 								<span></span>

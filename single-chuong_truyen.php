@@ -96,6 +96,15 @@ $next_chapter_url = home_url("/index.php/chuong/chuong-{$next_chapter}-{$story_s
 $prev_chapter = $current_chapter - 1;
 $prev_chapter_url = $prev_chapter > 0 ? home_url("/index.php/chuong/chuong-{$prev_chapter}-{$story_slug}/") : '';
 
+
+// *** THÊM LOGIC QUẢNG CÁO ***
+// Lấy số chương từ URL hoặc từ current_chapter_number
+$chapter_number = $current_chapter > 0 ? $current_chapter : $current_chapter_number;
+$show_ad = ($chapter_number > 0 && $chapter_number % 20 == 2); // ví dụ: chương 2, 22, 42...
+$link_qc = get_field("link_qc", 2);
+$img_qc_field = get_field("qc_img", 2);
+$img_qc = $img_qc_field ? $img_qc_field['url'] : '';
+
 get_header();
 ?>
 
@@ -115,8 +124,29 @@ get_header();
                     <?php endif; ?>
                 </header>
 
-                <div class="entry-content">
-                    <?php the_content(); ?>
+                                <!-- *** THÊM KHỐI QUẢNG CÁO *** -->
+                <div id="chapter-ad-block" style="display: <?php echo $show_ad ? 'block' : 'none'; ?>;">
+                    <?php if ($show_ad && $img_qc && $link_qc): ?>
+                        <div style="text-align:center; margin: 20px 0; padding: 20px; background: transparent; border-radius: 10px; border: 2px solid #dee2e6;">
+                            <h4 style="color: #fff; margin-bottom: 10px;">Mời bạn CLICK vào liên kết bên dưới và</h4>
+                            <h3><strong style="color: red; font-weight: bold;">MỞ ỨNG DỤNG SHOPEE</strong> để tiếp tục đọc!</h3> 
+                            <a style="display: block; font-size: 16px; margin: 10px 0; color: #007bff; word-break: break-all;" href="<?php echo esc_url($link_qc); ?>">👉<?php echo esc_url($link_qc); ?></a>
+                            <img src="<?php echo esc_url($img_qc); ?>" alt="Ad Banner"
+                                id="adBannerClick"
+                                style="width: 100%; max-width: 800px; cursor: pointer; border-radius: 8px; object-fit: contain; margin: 15px 0;" />
+                            <h3 style="color: red; font-weight: bold; margin: 20px 0;">PLT XIN CHÂN THÀNH CẢM ƠN QUÝ ĐỌC GIẢ!</h3>
+                            <p style="color: #666; font-size: 14px; margin-top: 15px;">
+                                <i class="fas fa-info-circle"></i> Click vào bất kỳ đâu trong khung này để mở Shopee và tiếp tục đọc truyện
+                            </p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- NỘI DUNG CHƯƠNG -->
+                <div id="chapter-content" style="display: <?php echo $show_ad ? 'none' : 'block'; ?>;">
+                    <div class="entry-content">
+                        <?php the_content(); ?>
+                    </div>
                 </div>
 
                 <?php
@@ -209,6 +239,40 @@ get_header();
 
                 <script>
                 jQuery(document).ready(function($) {
+
+                    // *** XỬ LÝ QUẢNG CÁO ***
+                    <?php if ($show_ad && $img_qc && $link_qc): ?>
+                    const truyenId = <?php echo json_encode($truyen_id); ?>;
+                    const adClickedKey = 'shopee_ad_clicked_' + truyenId;
+                    const adBlock = document.getElementById('chapter-ad-block');
+                    const content = document.getElementById('chapter-content');
+                    const redirectUrl = <?php echo json_encode($link_qc); ?>;
+
+                    // Nếu đã click quảng cáo ở truyện này rồi thì ẩn quảng cáo
+                    if (localStorage.getItem(adClickedKey) === 'true') {
+                        adBlock.style.display = 'none';
+                        content.style.display = 'block';
+                    } else {
+                        // Gán click cho toàn bộ khối quảng cáo
+                        adBlock.addEventListener('click', function() {
+                            window.open(redirectUrl, "_blank");
+                            adBlock.style.display = 'none';
+                            content.style.display = 'block';
+                            localStorage.setItem(adClickedKey, 'true');
+                        });
+                        
+                        // Thêm hiệu ứng hover
+                        adBlock.addEventListener('mouseenter', function() {
+                            this.style.transform = 'scale(1.02)';
+                            this.style.transition = 'transform 0.3s ease';
+                        });
+                        
+                        adBlock.addEventListener('mouseleave', function() {
+                            this.style.transform = 'scale(1)';
+                        });
+                    }
+                    <?php endif; ?>
+
                     $('.buy-next-chapter').on('click', function(e) {
                         e.preventDefault();
                         var chapterId = $(this).data('chapter-id');

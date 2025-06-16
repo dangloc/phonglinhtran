@@ -14,14 +14,16 @@ $user_balance = get_user_meta($author_id, '_user_balance', true);
 $vip_name = get_user_meta($author_id, '_user_vip_name', true);
 $is_vip = check_user_vip_status($author_id);
 
-$tiennu = get_template_directory_uri() . '/assets/images/tiennu.png';
-$ngocnu = get_template_directory_uri() . '/assets/images/ngocnu.png';
-$tienco = get_template_directory_uri() . '/assets/images/tienco.png';
-$huyennu = get_template_directory_uri() . '/assets/images/huyennu.png';
-$thannu = get_template_directory_uri() . '/assets/images/thannu.png';
-$thienton = get_template_directory_uri() . '/assets/images/thienton.png';
+$kychuvodanh = get_template_directory_uri() . '/assets/images/tiennu.png';
+$tanlinhkichu = get_template_directory_uri() . '/assets/images/tiennu.png';
+$kichuthuctinh = get_template_directory_uri() . '/assets/images/tiennu.png';
+$kichuphonglinhhoa = get_template_directory_uri() . '/assets/images/ngocnu.png';
+$thonglinhphonglinhtran = get_template_directory_uri() . '/assets/images/tienco.png';
+$kichutoithuong = get_template_directory_uri() . '/assets/images/huyennu.png';
+$linhvuong = get_template_directory_uri() . '/assets/images/thannu.png';
+$linhvuongmongcanh = get_template_directory_uri() . '/assets/images/thienton.png';
 
-$type_vip_name = ['Tiên nữ', 'Ngọc nữ', 'Tiên cô', 'Huyền nữ', 'Thần nữ', 'Thiên tôn'];
+$type_vip_name = ['Ký Chủ Vô Danh', 'Tân Linh Ký Chủ', 'Ký Chủ Thức Tỉnh', 'Ký Chủ Phong Linh Hóa', 'Thống Lĩnh Phong Linh Trấn', 'Ký Chủ Tối Thượng', 'Linh Vương', 'Linh Vương Mộng Cảnh'];
 
 // Get author's stories
 $args = array(
@@ -45,23 +47,29 @@ $author_stories = new WP_Query($args);
                         <div class="avatar-author-bg
                             <?php
                                 switch ($vip_name) {
-                                    case 'Tiên nữ':
-                                        echo 'tien-nu';
+                                    case 'Ký Chủ Vô Danh':
+                                        echo 'ky-chu-vo-danh';
                                         break;
-                                    case 'Ngọc nữ':
-                                        echo 'ngoc-nu';
+                                    case 'Tân Linh Ký Chủ':
+                                        echo 'tan-linh-ky-chu';
                                         break;
-                                    case 'Tiên cô':
-                                        echo 'tien-co';
+                                    case 'Ký Chủ Thức Tỉnh':
+                                        echo 'ky-chu-thuc-tinh';
                                         break;
-                                    case 'Huyền nữ':
-                                        echo 'huyen-nu';
+                                    case 'Ký Chủ Phong Linh Hóa':
+                                        echo 'ky-chu-phong-linh-hoa';
                                         break;
-                                    case 'Thần nữ':
-                                        echo 'than-nu';
+                                    case 'Thống Lĩnh Phong Linh Trấn':
+                                        echo 'thong-linh-phong-linh-tran';
                                         break;
-                                    case 'Thiên tôn':
-                                        echo 'thien-ton';
+                                    case 'Ký Chủ Tối Thượng':
+                                        echo 'ky-chu-toi-thuong';
+                                        break;
+                                    case 'Linh Vương':
+                                        echo 'linh-vuong';
+                                        break;
+                                    case 'Linh Vương Mộng Cảnh':
+                                        echo 'linh-vuong-mong-canh';
                                         break;
                                     default:
                                         // Nếu không khớp với loại VIP nào
@@ -72,23 +80,29 @@ $author_stories = new WP_Query($args);
                         ">
                             <?php 
                                 switch ($vip_name) {
-                                    case 'Tiên nữ':
-                                        echo '<img src="' . $tiennu . '" alt="Tiên nữ">';
+                                    case 'Ký Chủ Vô Danh':
+                                        echo '<img src="' . $kychuvodanh . '" alt="Ký Chủ Vô Danh">';
                                         break;
-                                    case 'Ngọc nữ':
-                                        echo '<img src="' . $ngocnu . '" alt="Ngọc nữ">';
+                                    case 'Tân Linh Ký Chủ':
+                                        echo '<img src="' . $tanlinhkichu . '" alt="Tân Linh Ký Chủ">';
                                         break;
-                                    case 'Tiên cô':
-                                        echo '<img src="' . $tienco . '" alt="Tiên cô">';
+                                    case 'Ký Chủ Thức Tỉnh':
+                                        echo '<img src="' . $kichuthuctinh . '" alt="Ký Chủ Thức Tỉnh">';
                                         break;
-                                    case 'Huyền nữ':
-                                        echo '<img src="' . $huyennu . '" alt="Huyền nữ">';
+                                    case 'Ký Chủ Phong Linh Hóa':
+                                        echo '<img src="' . $kichuphonglinhhoa . '" alt="Ký Chủ Phong Linh Hóa">';
                                         break;
-                                    case 'Thần nữ':
-                                        echo '<img src="' . $thannu . '" alt="Thần nữ">';
+                                    case 'Thống Lĩnh Phong Linh Trấn':
+                                        echo '<img src="' . $thonglinhphonglinhtran . '" alt="Thống Lĩnh Phong Linh Trấn">';
                                         break;
-                                    case 'Thiên tôn':
-                                        echo '<img src="' . $thienton . '" alt="Thiên tôn">';
+                                    case 'Ký Chủ Tối Thượng':
+                                        echo '<img src="' . $kichutoithuong . '" alt="Ký Chủ Tối Thượng">';
+                                        break;
+                                    case 'Linh Vương':
+                                        echo '<img src="' . $linhvuong . '" alt="Linh Vương">';
+                                        break;
+                                    case 'Linh Vương Mộng Cảnh':
+                                        echo '<img src="' . $linhvuongmongcanh . '" alt="Linh Vương Mộng Cảnh">';
                                         break;
                                     default:
                                         // Nếu không khớp với loại VIP nào
@@ -114,23 +128,29 @@ $author_stories = new WP_Query($args);
                         <?php if ($vip_name): ?>
                             <button class="btn-cus-vip <?php
                                  switch ($vip_name) {
-                                    case 'Tiên nữ':
-                                        echo 'btn-cus-vip--tien-nu';
+                                    case 'Ký Chủ Vô Danh':
+                                        echo 'btn-cus-vip--ky-chu-vo-danh';
                                         break;
-                                    case 'Ngọc nữ':
-                                        echo 'btn-cus-vip--ngoc-nu';
+                                    case 'Tân Linh Ký Chủ':
+                                        echo 'btn-cus-vip--tan-linh-ky-chu';
                                         break;
-                                    case 'Tiên cô':
-                                        echo 'btn-cus-vip--tien-co';
+                                    case 'Ký Chủ Thức Tỉnh':
+                                        echo 'btn-cus-vip--ky-chu-thuc-tinh';
                                         break;
-                                    case 'Huyền nữ':
-                                        echo 'btn-cus-vip--huyen-nu';
+                                    case 'Ký Chủ Phong Linh Hóa':
+                                        echo 'btn-cus-vip--ky-chu-phong-linh-hoa';
                                         break;
-                                    case 'Thần nữ':
-                                        echo 'btn-cus-vip--than-nu';
+                                    case 'Thống Lĩnh Phong Linh Trấn':
+                                        echo 'btn-cus-vip--thong-linh-phong-linh-tran';
                                         break;
-                                    case 'Thiên tôn':
-                                        echo 'btn-cus-vip--thien-ton';
+                                    case 'Ký Chủ Tối Thượng':
+                                        echo 'btn-cus-vip--ky-chu-toi-thuong';
+                                        break;
+                                    case 'Linh Vương':
+                                        echo 'btn-cus-vip--linh-vuong';
+                                        break;
+                                    case 'Linh Vương Mộng Cảnh':
+                                        echo 'btn-cus-vip--linh-vuong-mong-canh';
                                         break;
                                     default:
                                         echo '';

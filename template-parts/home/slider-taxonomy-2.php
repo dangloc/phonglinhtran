@@ -20,14 +20,18 @@ if ($term && !is_wp_error($term)) :
             <?php while ($tax_query->have_posts()) : $tax_query->the_post(); ?>
                 <div class="swiper-slide">
                     <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium'); ?>
+                        <?php 
+                        $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                        ?>
+                        <img src="<?php echo $featured_img_url ?>" 
+                            alt="<?php the_title_attribute(); ?>" 
+                            onerror="this.src='<?php echo get_template_directory_uri(); ?>/assets/images/icon-book.png'"
+                        />
                         <div class="slide-title"><?php the_title(); ?></div>
                     </a>
                 </div>
             <?php endwhile; ?>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
     </div>
 </section>
 <?php endif; wp_reset_postdata(); endif; ?>

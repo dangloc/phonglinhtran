@@ -30,17 +30,27 @@ get_header();
 
 			get_template_part( 'template-parts/home/banner' );
 
-			get_template_part( 'template-parts/home/slider-latest' );
+			?>
+			<div class="row">
+				<div class="col-lg-8">
+					<?php 
+					get_template_part( 'template-parts/home/slider-latest' );
 
-			get_template_part( 'template-parts/home/slider-popular' );
+					get_template_part( 'template-parts/home/slider-popular' );
 
-			get_template_part( 'template-parts/home/slider-taxonomy-1' );
+					get_template_part( 'template-parts/home/slider-taxonomy-1' );
 
-			get_template_part( 'template-parts/home/slider-taxonomy-2' );
+					get_template_part( 'template-parts/home/slider-taxonomy-2' );
 
 
-			the_posts_navigation();
-
+					the_posts_navigation();
+					?>
+				</div>
+				<div class="col-lg-4">
+					<?php get_template_part( 'sidebar' );  ?>
+				</div>
+			</div>
+			<?php
 		else :
 
 			get_template_part( 'template-parts/content', 'none' );
