@@ -155,12 +155,13 @@ document.addEventListener('DOMContentLoaded', function() {
     new Swiper('.category-slider', {
         slidesPerView: 8,
         loop: true,
-        speed: 6000, // thời gian chạy hết 1 vòng (ms)
+        speed: 6000,
         autoplay: {
-            delay: 0, // để chạy liên tục
+            delay: 0,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true
         },
-        allowTouchMove: false, // không cho người dùng kéo làm gián đoạn
+        allowTouchMove: true,
         spaceBetween: 24,
         freeMode: true,
         grabCursor: true,
@@ -185,6 +186,9 @@ document.addEventListener('DOMContentLoaded', function() {
         on: {
             autoplay: function () {
                 document.querySelector('.category-slider .swiper-wrapper').style.transitionTimingFunction = 'linear';
+            },
+            touchEnd: function() {
+                this.autoplay.start();
             }
         }
     });
