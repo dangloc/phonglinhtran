@@ -25,20 +25,12 @@ function create_reading_history_table() {
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     $result = dbDelta($sql);
-    
-    // Log table creation result
-    error_log('Tạo bảng reading_history:');
-    error_log(print_r($result, true));
-    
     // Verify table exists
     $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name;
-    error_log('Bảng reading_history tồn tại: ' . ($table_exists ? 'Có' : 'Không'));
     
     if ($table_exists) {
         // Check table structure
         $columns = $wpdb->get_results("DESCRIBE $table_name");
-        error_log('Cấu trúc bảng reading_history:');
-        error_log(print_r($columns, true));
     }
 }
 add_action('after_switch_theme', 'create_reading_history_table');
@@ -158,11 +150,6 @@ add_action('wp_ajax_delete_reading_history', 'handle_delete_reading_history');
 
 // Add reading history to single chapter page
 function track_chapter_reading() {
-    // Debug current page
-    error_log('=== Debug track_chapter_reading ===');
-    error_log('is_singular(chuong_truyen): ' . (is_singular('chuong_truyen') ? 'true' : 'false'));
-    error_log('is_user_logged_in(): ' . (is_user_logged_in() ? 'true' : 'false'));
-    
     if (is_singular('chuong_truyen') && is_user_logged_in()) {
         global $post;
         error_log('Current post ID: ' . $post->ID);
@@ -170,7 +157,6 @@ function track_chapter_reading() {
         
         // Get story ID from ACF field
         $story = get_field('chuong_with_truyen');
-        error_log('ACF field chuong_with_truyen: ' . print_r($story, true));
         
         if (!$story) {
             error_log('Không tìm thấy truyện cho chương ID: ' . $post->ID);
@@ -179,7 +165,6 @@ function track_chapter_reading() {
         
         // Get chapter number from URL
         $current_url = $_SERVER['REQUEST_URI'];
-        error_log('Current URL: ' . $current_url);
         
         // Try different URL patterns
         $chapter_number = 0;
@@ -197,15 +182,9 @@ function track_chapter_reading() {
         // Pattern 3: /chuong/{slug}/{number}/
         elseif (preg_match('/chuong\/([^\/]+)\/(\d+)/', $current_url, $matches)) {
             $chapter_number = intval($matches[2]);
-            error_log('Found chapter number from pattern 3: ' . $chapter_number);
         }
         
         if ($chapter_number > 0) {
-            error_log('Đang lưu lịch sử đọc:');
-            error_log('- User ID: ' . get_current_user_id());
-            error_log('- Story ID: ' . $story->ID);
-            error_log('- Chapter ID: ' . $post->ID);
-            error_log('- Chapter Number: ' . $chapter_number);
             
             save_reading_history(
                 get_current_user_id(),
@@ -214,12 +193,10 @@ function track_chapter_reading() {
                 $chapter_number
             );
         } else {
-            error_log('Không tìm thấy số chương trong URL: ' . $current_url);
             
             // Try to get chapter number from post title
             if (preg_match('/Chương\s+(\d+)/', $post->post_title, $matches)) {
                 $chapter_number = intval($matches[1]);
-                error_log('Found chapter number from post title: ' . $chapter_number);
                 
                 save_reading_history(
                     get_current_user_id(),
