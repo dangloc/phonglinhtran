@@ -24,7 +24,6 @@ $linhvuong = get_template_directory_uri() . '/assets/images/thannu.png';
 $linhvuongmongcanh = get_template_directory_uri() . '/assets/images/thienton.png';
 
 $type_vip_name = ['Ký Chủ Vô Danh', 'Tân Linh Ký Chủ', 'Ký Chủ Thức Tỉnh', 'Ký Chủ Phong Linh Hóa', 'Thống Lĩnh Phong Linh Trấn', 'Ký Chủ Tối Thượng', 'Linh Vương', 'Linh Vương Mộng Cảnh'];
-
 // Get author's stories
 $args = array(
     'post_type' => 'truyen_chu',
@@ -178,6 +177,13 @@ $author_stories = new WP_Query($args);
                         <div class="text-center">
                             <h5 class="mb-0"><?php echo number_format((float)$user_balance); ?></h5>
                             <small class="text-muted">Kim tệ</small>
+                            <?php if (is_user_logged_in() && get_current_user_id() === $author_id && (float)$user_balance >= 5000): ?>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm btn-warning" id="withdrawBtn">
+                                        <i class="fas fa-money-bill-wave"></i> Rút tiền
+                                    </button>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <?php if ($author->description): ?>
@@ -366,6 +372,77 @@ jQuery(document).ready(function($) {
                             icon: 'error',
                             title: 'Lỗi!',
                             text: 'Có lỗi xảy ra khi xóa ảnh đại diện'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Handle withdrawal request
+    $('#withdrawBtn').on('click', function() {
+        const balance = <?php echo (float)$user_balance; ?>;
+        const fee = 0.05; // 5% fee
+        const withdrawAmount = balance * (1 - fee);
+        
+        Swal.fire({
+            title: 'Xác nhận rút tiền?',
+            html: `
+                <div class="text-start">
+                    <p>Số dư hiện tại: <strong>${balance.toLocaleString()} Kim tệ</strong></p>
+                    <p>Phí rút tiền (5%): <strong>${(balance * fee).toLocaleString()} Kim tệ</strong></p>
+                    <p>Số tiền nhận được: <strong>${withdrawAmount.toLocaleString()} Kim tệ</strong></p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận rút tiền',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    type: 'POST',
+                    data: {
+                        action: 'request_withdrawal',
+                        security: '<?php echo wp_create_nonce("withdrawal_nonce"); ?>',
+                        amount: balance
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Yêu cầu rút tiền của bạn đã được gửi đến admin',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: response.data || 'Có lỗi xảy ra khi gửi yêu cầu rút tiền'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi gửi yêu cầu rút tiền'
                         });
                     }
                 });

@@ -1833,3 +1833,7 @@ add_action('wp_enqueue_scripts', 'enqueue_chapter_count_script');
 
 // Include AJAX handler
 require_once get_template_directory() . '/ajax-handler.php';
+
+// ... existing code ...
+require_once get_template_directory() . '/withdrawal-functions.php';
+// ... existing code ...
