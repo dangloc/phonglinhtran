@@ -33,7 +33,7 @@
 				</div>
 				<div class="col-md-4 overfollow-hidden">
 					<h4>Theo dõi fanpage</h4>
-					<iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fgiothoiduamayvetroi%3Frdid%3D8LuaPTznj6wuXy2I%26share_url%3Dhttps%253A%252F%252Fwww.facebook.com%252Fshare%252F1EqUSSinPG%252F%23&tabs=timeline&width=280&height=180&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=681892607471462" width="280" height="180" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+					<?php echo get_field('iframe_fb', 2); ?>
 				</div>
 			</div>
 			<div class="d-flex justify-content-center">
