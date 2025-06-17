@@ -16,8 +16,9 @@
 			<div class="row">
 				<div class="col-md-4">
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-						<img src="<?php bloginfo('template_url'); ?>/assets/images/logo.svg" alt="">
-					</a>
+						<?php $logo_url = get_field('logo_url', 2); ?>
+							<img src="<?php $logo_url['url']; ?>" alt="logo">
+						</a>
 				</div>
 				<div class="col-md-4">
 					<h4>Thông báo và hướng dẫn</h4>

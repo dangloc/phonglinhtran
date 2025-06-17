@@ -142,7 +142,8 @@
 		<div class="site-branding container">
 			<div class="site-branding-left">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-					<img src="<?php bloginfo('template_url'); ?>/assets/images/logo.svg" alt="">
+					<?php $logo_url = get_field('logo_url', 2); ?>
+					<img src="<?php $logo_url['url']; ?>" alt="logo">
 				</a>
 			</div>
 			<div class="site-branding-mid">
