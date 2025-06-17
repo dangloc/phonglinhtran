@@ -146,8 +146,8 @@
 					<img src="<?php echo $logo_url['url']; ?>" alt="logo">
 				</a>
 			</div>
-			<div class="site-branding-mid">
-				<div class="search-form-container d-flex align-items-center">
+			<div class="site-branding-mid w-100">
+				<div class="search-form-container d-flex align-items-center w-100">
 					<form role="search" method="get" class="d-flex" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 						<input type="search" class="form-control search-input" placeholder="Tìm kiếm..." value="<?php echo get_search_query(); ?>" name="s" aria-label="Search">
 					</form>

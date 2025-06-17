@@ -43,10 +43,32 @@
 											<div class="title-box">
 												<div class="slide-title"><?php the_title(); ?></div>
 												<div>
+													<?php 
+													$trang_thai = get_the_terms(get_the_ID(), 'trang_thai');
+													$is_completed = false;
+													if ($trang_thai && !is_wp_error($trang_thai)) {
+														foreach ($trang_thai as $term) {
+															if ($term->slug === 'da-hoan-thanh') {
+																$is_completed = true;
+																break;
+															}
+														}
+													}
+													?>
 													<p class="count-port">
-														<small class="text-muted-custom chapter-count" data-truyen-id="<?php echo get_the_ID(); ?>">
-															...
-														</small>
+														<?php
+														if($is_completed){
+															?>
+															Full
+															<?php
+														}else{
+															?>
+															<small class="text-muted-custom chapter-count" data-truyen-id="<?php echo get_the_ID(); ?>">
+																<?php echo $is_completed ? 'Full' : '...'; ?>
+															</small>
+															<?php
+														}
+														?>
 													</p>
 													<?php
 													// Hiển thị thể loại
@@ -117,10 +139,32 @@
 										<div class="title-box">
 											<div class="slide-title"><?php the_title(); ?></div>
 											<div>
+												<?php 
+												$trang_thai1 = get_the_terms(get_the_ID(), 'trang_thai');
+												$is_completed1 = false;
+												if ($trang_thai1 && !is_wp_error($trang_thai1)) {
+													foreach ($trang_thai1 as $term) {
+														if ($term->slug === 'da-hoan-thanh') {
+															$is_completed1 = true;
+															break;
+														}
+													}
+												}
+												?>
 												<p class="count-port">
+													<?php
+													if($is_completed1){
+														?>
+														Full
+														<?php
+													}else{
+														?>
 														<small class="text-muted-custom chapter-count" data-truyen-id="<?php echo get_the_ID(); ?>">
-															...
+															<?php echo $is_completed1 ? 'Full' : '...'; ?>
 														</small>
+														<?php
+													}
+													?>
 												</p>
 												<?php
 												// Hiển thị thể loại
