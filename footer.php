@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="d-flex justify-content-center">
-				<p class="copyright">Copyright © 2025 phonglinhtran.xyz. All rights reserved.</p>
+				<p class="copyright">Copyright © 2025 <?php get_bloginfo(); ?>. All rights reserved.</p>
 			</div>
 		</div>
 	</footer><!-- #colophon -->
