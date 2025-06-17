@@ -100,7 +100,7 @@ $prev_chapter_url = $prev_chapter > 0 ? home_url("/index.php/chuong/chuong-{$pre
 // *** THÊM LOGIC QUẢNG CÁO ***
 // Lấy số chương từ URL hoặc từ current_chapter_number
 $chapter_number = $current_chapter > 0 ? $current_chapter : $current_chapter_number;
-$show_ad = ($chapter_number > 0 && $chapter_number % 20 == 2); // ví dụ: chương 2, 22, 42...
+$show_ad = ($chapter_number > 0 && $chapter_number == 2);
 $link_qc = get_field("link_qc", 2);
 $img_qc_field = get_field("qc_img", 2);
 $img_qc = $img_qc_field ? $img_qc_field['url'] : '';
@@ -108,12 +108,12 @@ $img_qc = $img_qc_field ? $img_qc_field['url'] : '';
 get_header();
 ?>
 
-<main id="primary" class="site-main">
+<main id="primary" class="site-main" style="background-color: #F2E8CB">
     <div class="container py-4">
         <?php while (have_posts()) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <header class="entry-header mb-4">
-                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                    <h1 class="entry-title" style="color: #000"><?php the_title(); ?></h1>
                     
                     <?php if ($truyen) : ?>
                         <div class="truyen-link mb-3">
@@ -144,7 +144,7 @@ get_header();
 
                 <!-- NỘI DUNG CHƯƠNG -->
                 <div id="chapter-content" style="display: <?php echo $show_ad ? 'none' : 'block'; ?>;">
-                    <div class="entry-content">
+                    <div class="entry-content" style="color: #000">
                         <?php the_content(); ?>
                     </div>
                 </div>
