@@ -134,7 +134,7 @@ get_header();
                             <img src="<?php echo esc_url($img_qc); ?>" alt="Ad Banner"
                                 id="adBannerClick"
                                 style="width: 100%; max-width: 800px; cursor: pointer; border-radius: 8px; object-fit: contain; margin: 15px 0;" />
-                            <h3 style="color: red; font-weight: bold; margin: 20px 0;">PLT XIN CHÂN THÀNH CẢM ƠN QUÝ ĐỌC GIẢ!</h3>
+                            <h3 style="color: red; font-weight: bold; margin: 20px 0;"><?php echo get_bloginfo('name'); ?> XIN CHÂN THÀNH CẢM ƠN QUÝ ĐỌC GIẢ!</h3>
                             <p style="color: #666; font-size: 14px; margin-top: 15px;">
                                 <i class="fas fa-info-circle"></i> Click vào bất kỳ đâu trong khung này để mở Shopee và tiếp tục đọc truyện
                             </p>

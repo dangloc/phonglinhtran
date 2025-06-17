@@ -56,6 +56,35 @@ if ($term && !is_wp_error($term)) :
                                 ?>
                             </p>
                     </a>
+                    <?php
+                                // Hiển thị tác giả
+                                $tac_gia = get_the_terms(get_the_ID(), 'tac_gia');
+                                if ($tac_gia && !is_wp_error($tac_gia)) : ?>
+                                    <p class="mb-1">
+                                        <small class="text-muted-custom">
+                                            <strong>Tác giả:</strong> 
+                                            <?php echo esc_html($tac_gia[0]->name); ?>
+                                        </small>
+                                    </p>
+                                <?php endif; ?>
+
+                                <?php
+                                // Hiển thị thể loại
+                                $the_loai = get_the_terms(get_the_ID(), 'the_loai');
+                                if ($the_loai && !is_wp_error($the_loai)) : ?>
+                                    <p class="mb-1">
+                                        <small class="text-muted-custom">
+                                            <strong>Thể loại:</strong> 
+                                            <?php
+                                            $the_loai_names = array();
+                                            foreach ($the_loai as $term) {
+                                                $the_loai_names[] = $term->name;
+                                            }
+                                            echo esc_html(implode(', ', $the_loai_names));
+                                            ?>
+                                        </small>
+                                    </p>
+                                <?php endif; ?>
                 </div>
             <?php endwhile; ?>
         </div>
