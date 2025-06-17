@@ -43,5 +43,5 @@ jobs:
         with:
           server: 210.211.125.205
           username: admin@tangthunguyet.xyz
-          password: ${{ secrets.FTP_PHONGLINHTRAN }}z
+          password: ${{ secrets.FTP_PHONGLINHTRAN }}
           server-dir: /wp-content/themes/commicpro/
