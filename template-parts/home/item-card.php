@@ -89,12 +89,6 @@ $excerpt = get_the_excerpt($post);
                                         </small>
                                     </p>
                                 <?php endif; ?>
-
-                                <p class="mb-1 latest-chapter-info">
-                                    <small class="text-muted-custom">
-                                        <span class="latest-chapter">...</span>
-                                    </small>
-                                </p>
                             </div>
                         </article>
                     </div>

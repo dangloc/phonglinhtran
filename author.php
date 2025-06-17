@@ -177,14 +177,14 @@ $author_stories = new WP_Query($args);
                         <div class="text-center">
                             <h5 class="mb-0"><?php echo number_format((float)$user_balance); ?></h5>
                             <small class="text-muted">Kim tệ</small>
-                            <?php if (is_user_logged_in() && get_current_user_id() === $author_id && (float)$user_balance >= 5000): ?>
+                        </div>
+                        <?php if (is_user_logged_in() && get_current_user_id() === $author_id && (float)$user_balance >= 5000): ?>
                                 <div class="mt-2">
                                     <button type="button" class="btn btn-sm btn-warning" id="withdrawBtn">
                                         <i class="fas fa-money-bill-wave"></i> Rút tiền
                                     </button>
                                 </div>
                             <?php endif; ?>
-                        </div>
                     </div>
                     <?php if ($author->description): ?>
                         <p class="card-text"><?php echo nl2br(esc_html($author->description)); ?></p>
