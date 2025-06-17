@@ -17,7 +17,7 @@
 				<div class="col-md-4">
 					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
 						<?php $logo_url = get_field('logo_url', 2); ?>
-							<img src="<?php $logo_url['url']; ?>" alt="logo">
+							<img src="<?php echo $logo_url['url']; ?>" alt="logo">
 						</a>
 				</div>
 				<div class="col-md-4">
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="d-flex justify-content-center">
-				<p class="copyright">Copyright © 2025 <?php get_bloginfo(); ?>. All rights reserved.</p>
+				<p class="copyright">Copyright © 2025 <?php echo get_bloginfo('name'); ?>. All rights reserved.</p>
 			</div>
 		</div>
 	</footer><!-- #colophon -->

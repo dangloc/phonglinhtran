@@ -143,7 +143,7 @@
 			<div class="site-branding-left">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
 					<?php $logo_url = get_field('logo_url', 2); ?>
-					<img src="<?php $logo_url['url']; ?>" alt="logo">
+					<img src="<?php echo $logo_url['url']; ?>" alt="logo">
 				</a>
 			</div>
 			<div class="site-branding-mid">
