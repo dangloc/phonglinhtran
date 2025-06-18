@@ -37,7 +37,7 @@ wp_enqueue_style('font-awesome-6', 'https://cdnjs.cloudflare.com/ajax/libs/font-
     $ranked_stories = new WP_Query($args);
     
     if ($ranked_stories->have_posts()) : ?>
-        <div class="table-responsive">
+        <div class="ranking-table-wrapper">
             <table class="table ranking-table">
                 <thead>
                     <tr>
