@@ -383,15 +383,29 @@ jQuery(document).ready(function($) {
     $('#withdrawBtn').on('click', function() {
         const balance = <?php echo (float)$user_balance; ?>;
         const fee = 0.05; // 5% fee
-        const withdrawAmount = balance * (1 - fee);
+        const minWithdraw = 5000;
         
         Swal.fire({
-            title: 'Xác nhận rút tiền?',
+            title: 'Rút tiền',
             html: `
                 <div class="text-start">
                     <p>Số dư hiện tại: <strong>${balance.toLocaleString()} Kim tệ</strong></p>
-                    <p>Phí rút tiền (5%): <strong>${(balance * fee).toLocaleString()} Kim tệ</strong></p>
-                    <p>Số tiền nhận được: <strong>${withdrawAmount.toLocaleString()} Kim tệ</strong></p>
+                    <div class="mb-2">
+                        <label for="withdrawAmountInput">Nhập số tiền muốn rút (tối thiểu 5.000):</label>
+                        <input type="number" id="withdrawAmountInput" class="swal2-input" min="${minWithdraw}" max="${balance}" value="${balance}" style="width: 70%;" />
+                    </div>
+                    <div class="mb-2">
+                        <label for="bankAccountInput">Số tài khoản ngân hàng:</label>
+                        <input type="text" id="bankAccountInput" class="swal2-input" placeholder="Nhập số tài khoản" style="width: 70%;" />
+                    </div>
+                    <div class="mb-2">
+                        <label for="bankNameInput">Tên ngân hàng:</label>
+                        <input type="text" id="bankNameInput" class="swal2-input" placeholder="Nhập tên ngân hàng" style="width: 70%;" />
+                    </div>
+                    <div id="withdrawFeeInfo">
+                        <p>Phí rút tiền (5%): <strong>${(balance * fee).toLocaleString()} Kim tệ</strong></p>
+                        <p>Số tiền nhận được: <strong>${(balance * (1-fee)).toLocaleString()} Kim tệ</strong></p>
+                    </div>
                 </div>
             `,
             icon: 'question',
@@ -399,9 +413,49 @@ jQuery(document).ready(function($) {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Xác nhận rút tiền',
-            cancelButtonText: 'Hủy'
+            cancelButtonText: 'Hủy',
+            didOpen: () => {
+                const input = document.getElementById('withdrawAmountInput');
+                const feeInfo = document.getElementById('withdrawFeeInfo');
+                input.addEventListener('input', function() {
+                    let val = parseFloat(input.value) || 0;
+                    if (val > balance) val = balance;
+                    if (val < minWithdraw) val = minWithdraw;
+                    const feeAmount = val * fee;
+                    const receiveAmount = val - feeAmount;
+                    feeInfo.innerHTML = `
+                        <p>Phí rút tiền (5%): <strong>${feeAmount.toLocaleString()} Kim tệ</strong></p>
+                        <p>Số tiền nhận được: <strong>${receiveAmount.toLocaleString()} Kim tệ</strong></p>
+                    `;
+                });
+            },
+            preConfirm: () => {
+                const amountInput = document.getElementById('withdrawAmountInput');
+                const bankAccountInput = document.getElementById('bankAccountInput');
+                const bankNameInput = document.getElementById('bankNameInput');
+                let val = parseFloat(amountInput.value) || 0;
+                if (val > balance) val = balance;
+                if (val < minWithdraw) {
+                    Swal.showValidationMessage('Số tiền rút tối thiểu là 5.000 Kim tệ');
+                    return false;
+                }
+                if (!bankAccountInput.value.trim()) {
+                    Swal.showValidationMessage('Vui lòng nhập số tài khoản ngân hàng');
+                    return false;
+                }
+                if (!bankNameInput.value.trim()) {
+                    Swal.showValidationMessage('Vui lòng nhập tên ngân hàng');
+                    return false;
+                }
+                return {
+                    amount: val,
+                    bank_account: bankAccountInput.value.trim(),
+                    bank_name: bankNameInput.value.trim()
+                };
+            }
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed && result.value) {
+                const { amount, bank_account, bank_name } = result.value;
                 // Show loading state
                 Swal.fire({
                     title: 'Đang xử lý...',
@@ -417,7 +471,9 @@ jQuery(document).ready(function($) {
                     data: {
                         action: 'request_withdrawal',
                         security: '<?php echo wp_create_nonce("withdrawal_nonce"); ?>',
-                        amount: balance
+                        amount: amount,
+                        bank_account: bank_account,
+                        bank_name: bank_name
                     },
                     success: function(response) {
                         if (response.success) {

@@ -7,10 +7,16 @@ function handle_withdrawal_request() {
     $user_id = get_current_user_id();
     $amount = floatval($_POST['amount']);
     $user_balance = get_user_meta($user_id, '_user_balance', true);
+    $bank_account = sanitize_text_field($_POST['bank_account']);
+    $bank_name = sanitize_text_field($_POST['bank_name']);
     
     // Verify user has enough balance
     if ($amount > $user_balance) {
         wp_send_json_error('Số dư không đủ');
+        return;
+    }
+    if (empty($bank_account) || empty($bank_name)) {
+        wp_send_json_error('Vui lòng nhập đầy đủ thông tin ngân hàng');
         return;
     }
     
@@ -22,7 +28,9 @@ function handle_withdrawal_request() {
         'net_amount' => $amount * 0.95,
         'status' => 'pending',
         'date' => current_time('mysql'),
-        'user_name' => get_user_meta($user_id, 'nickname', true)
+        'user_name' => get_user_meta($user_id, 'nickname', true),
+        'bank_account' => $bank_account,
+        'bank_name' => $bank_name
     );
     
     // Get existing requests
@@ -62,6 +70,8 @@ function display_withdrawal_requests() {
             <thead>
                 <tr>
                     <th>Người dùng</th>
+                    <th>Số tài khoản</th>
+                    <th>Ngân hàng</th>
                     <th>Số tiền</th>
                     <th>Phí (5%)</th>
                     <th>Số tiền nhận</th>
@@ -74,6 +84,8 @@ function display_withdrawal_requests() {
                 <?php foreach ($requests as $index => $request): ?>
                     <tr>
                         <td><?php echo esc_html($request['user_name']); ?></td>
+                        <td><?php echo esc_html($request['bank_account']); ?></td>
+                        <td><?php echo esc_html($request['bank_name']); ?></td>
                         <td><?php echo number_format($request['amount']); ?> Kim tệ</td>
                         <td><?php echo number_format($request['fee']); ?> Kim tệ</td>
                         <td><?php echo number_format($request['net_amount']); ?> Kim tệ</td>
