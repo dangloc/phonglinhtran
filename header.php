@@ -219,36 +219,54 @@
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-black" id="loginModalLabel">Đăng nhập</h1>
+					<h1 class="modal-title fs-5" id="loginModalLabel">Đăng nhập</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="login-form" method="post">
+					<form id="login-form" method="post" novalidate>
 						<div class="mb-3">
 							<label for="login-username" class="form-label">Tên đăng nhập</label>
-							<input type="text" class="form-control" id="login-username" name="username" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+								<input type="text" class="form-control" id="login-username" name="username" required>
+								<div class="invalid-feedback">Vui lòng nhập tên đăng nhập.</div>
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="login-password" class="form-label">Mật khẩu</label>
-							<input type="password" class="form-control" id="login-password" name="password" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-lock"></i></span>
+								<input type="password" class="form-control" id="login-password" name="password" required>
+								<span class="input-group-text password-toggle" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
+								<div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
+							</div>
 						</div>
 						<div class="mb-3 form-check">
 							<input type="checkbox" class="form-check-input" id="remember-me" name="remember">
 							<label class="form-check-label" for="remember-me">Ghi nhớ đăng nhập</label>
 						</div>
 						<div class="d-grid">
-							<button type="submit" class="btn btn-primary">Đăng nhập</button>
+							<button type="submit" class="btn btn-primary">
+								<span class="btn-text">Đăng nhập</span>
+								<span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+							</button>
 						</div>
 					</form>
-				</div>
-				<div class="modal-footer justify-content-center flex-column">
-					<div class="d-flex">
-						<a class="btn btn-primary" href="https://tusachiep.xyz/wp-login.php?loginSocial=google" data-plugin="nsl" data-action="connect" data-redirect="current" data-provider="google" data-popupwidth="600" data-popupheight="600">
-							Đăng nhập bằng google <img style="width: 24px; height: 24px;" src="<?php bloginfo('template_url'); ?>/assets/images/google.svg" alt="">
+					<div class="d-flex align-items-center my-3">
+						<hr class="flex-grow-1">
+						<span class="mx-2 text-muted">Hoặc</span>
+						<hr class="flex-grow-1">
+					</div>
+					<div class="d-grid">
+						<a class="btn btn-outline-secondary" href="https://tusachiep.xyz/wp-login.php?loginSocial=google" data-plugin="nsl" data-action="connect" data-redirect="current" data-provider="google" data-popupwidth="600" data-popupheight="600">
+							<img style="width: 20px; height: 20px; margin-right: 8px;" src="<?php bloginfo('template_url'); ?>/assets/images/google.svg" alt="Google">
+							Đăng nhập bằng Google
 						</a>
 					</div>
-					<p class="mb-0 text-black">Chưa có tài khoản? 
-						<button class="btn text-black btn-link p-0" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">
+				</div>
+				<div class="modal-footer justify-content-center">
+					<p class="mb-0">Chưa có tài khoản? 
+						<button class="btn btn-link p-0" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">
 							Đăng ký ngay
 						</button>
 					</p>
@@ -262,41 +280,67 @@
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-black" id="registerModalLabel">Đăng ký tài khoản</h1>
+					<h1 class="modal-title fs-5" id="registerModalLabel">Đăng ký tài khoản</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="register-form" method="post">
+					<form id="register-form" method="post" novalidate>
 						<div class="mb-3">
 							<label for="register-username" class="form-label">Tên đăng nhập</label>
-							<input type="text" class="form-control" id="register-username" name="username" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+								<input type="text" class="form-control" id="register-username" name="username" required>
+								<div class="invalid-feedback">Tên đăng nhập không được để trống và chỉ chứa ký tự a-z, 0-9.</div>
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="register-email" class="form-label">Email</label>
-							<input type="email" class="form-control" id="register-email" name="email" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-envelope"></i></span>
+								<input type="email" class="form-control" id="register-email" name="email" required>
+								<div class="invalid-feedback">Vui lòng nhập một địa chỉ email hợp lệ.</div>
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="register-password" class="form-label">Mật khẩu</label>
-							<input type="password" class="form-control" id="register-password" name="password" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-lock"></i></span>
+								<input type="password" class="form-control" id="register-password" name="password" required minlength="6">
+								<span class="input-group-text password-toggle" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
+								<div class="invalid-feedback">Mật khẩu phải có ít nhất 6 ký tự.</div>
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="register-password-confirm" class="form-label">Xác nhận mật khẩu</label>
-							<input type="password" class="form-control" id="register-password-confirm" name="password_confirm" required>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+								<input type="password" class="form-control" id="register-password-confirm" name="password_confirm" required>
+								<span class="input-group-text password-toggle" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
+								<div class="invalid-feedback">Mật khẩu xác nhận không khớp.</div>
+							</div>
 						</div>
 						<div class="d-grid">
-							<button type="submit" class="btn btn-primary">Đăng ký</button>
+							<button type="submit" class="btn btn-primary">
+								<span class="btn-text">Đăng ký</span>
+								<span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+							</button>
 						</div>
 					</form>
-				</div>
-				
-				<div class="modal-footer justify-content-center flex-column">
-					<div class="d-flex">
-						<a class="btn btn-primary" href="https://tusachiep.xyz/wp-login.php?loginSocial=google" data-plugin="nsl" data-action="connect" data-redirect="current" data-provider="google" data-popupwidth="600" data-popupheight="600">
-							Đăng nhập bằng google <img style="width: 24px; height: 24px;" src="<?php bloginfo('template_url'); ?>/assets/images/google.svg" alt="">
+					<div class="d-flex align-items-center my-3">
+						<hr class="flex-grow-1">
+						<span class="mx-2 text-muted">Hoặc</span>
+						<hr class="flex-grow-1">
+					</div>
+					<div class="d-grid">
+						<a class="btn btn-outline-secondary" href="https://tusachiep.xyz/wp-login.php?loginSocial=google" data-plugin="nsl" data-action="connect" data-redirect="current" data-provider="google" data-popupwidth="600" data-popupheight="600">
+							<img style="width: 20px; height: 20px; margin-right: 8px;" src="<?php bloginfo('template_url'); ?>/assets/images/google.svg" alt="Google">
+							Đăng nhập bằng Google
 						</a>
 					</div>
-					<p class="mb-0 text-black">Đã có tài khoản? 
-						<button class="btn text-black btn-link p-0" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">
+				</div>
+				<div class="modal-footer justify-content-center">
+					<p class="mb-0">Đã có tài khoản? 
+						<button class="btn btn-link p-0" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">
 							Đăng nhập
 						</button>
 					</p>
@@ -307,82 +351,96 @@
 
 	<script>
 	jQuery(document).ready(function($) {
-		// Function to convert Vietnamese text to non-accented text
+		// --- CÁC HÀM TIỆN ÍCH ---
+
+		// Chuyển đổi ký tự có dấu thành không dấu và lọc ký tự đặc biệt
 		function removeAccents(str) {
 			return str.normalize('NFD')
-				.replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-				.replace(/đ/g, 'd').replace(/Đ/g, 'D') // Convert đ to d
-				.replace(/[^a-zA-Z0-9]/g, ''); // Only allow letters and numbers
+				.replace(/[\u0300-\u036f]/g, '')
+				.replace(/đ/g, 'd').replace(/Đ/g, 'D')
+				.replace(/[^a-zA-Z0-9]/g, ''); // Chỉ cho phép chữ và số
+		}
+		
+		// Kiểm tra định dạng email
+		function validateEmail(email) {
+			const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			return re.test(String(email).toLowerCase());
 		}
 
-		// Add event listener for username input
-		$('#register-username').on('input', function() {
+		// Hàm hiển thị/ẩn trạng thái loading trên nút bấm
+		function toggleButtonLoading(button, isLoading) {
+			const btnText = button.find('.btn-text');
+			const spinner = button.find('.spinner-border');
+			if (isLoading) {
+				button.prop('disabled', true);
+				btnText.addClass('d-none');
+				spinner.removeClass('d-none');
+			} else {
+				button.prop('disabled', false);
+				btnText.removeClass('d-none');
+				spinner.addClass('d-none');
+			}
+		}
+
+		// --- XỬ LÝ FORM ĐĂNG KÝ ---
+		const registerForm = $('#register-form');
+		const registerUsername = $('#register-username');
+		const registerEmail = $('#register-email');
+		const registerPassword = $('#register-password');
+		const registerPasswordConfirm = $('#register-password-confirm');
+
+		// Tự động chuyển tên đăng nhập thành không dấu
+		registerUsername.on('input', function() {
 			var input = $(this);
 			var originalValue = input.val();
 			var convertedValue = removeAccents(originalValue);
+			if(originalValue !== convertedValue) {
 			input.val(convertedValue);
-		});
-
-		// Xử lý form đăng nhập
-		$('#login-form').on('submit', function(e) {
-			e.preventDefault();
-			
-			var formData = {
-				action: 'ajax_login',
-				username: $('#login-username').val(),
-				password: $('#login-password').val(),
-				remember: $('#remember-me').is(':checked'),
-				nonce: '<?php echo wp_create_nonce('ajax_login_nonce'); ?>'
-			};
-
-			$.ajax({
-				url: '<?php echo admin_url('admin-ajax.php'); ?>',
-				type: 'POST',
-				data: formData,
-				success: function(response) {
-					if (response.success) {
-						Swal.fire({
-							title: 'Thành công!',
-							text: 'Đăng nhập thành công',
-							icon: 'success',
-							confirmButtonText: 'OK'
-						}).then((result) => {
-							window.location.reload();
-						});
-					} else {
-						Swal.fire({
-							title: 'Lỗi!',
-							text: response.data,
-							icon: 'error',
-							confirmButtonText: 'OK'
-						});
-					}
-				}
-			});
-		});
-
-		// Xử lý form đăng ký
-		$('#register-form').on('submit', function(e) {
-			e.preventDefault();
-			
-			var password = $('#register-password').val();
-			var passwordConfirm = $('#register-password-confirm').val();
-
-			if (password !== passwordConfirm) {
-				Swal.fire({
-					title: 'Lỗi!',
-					text: 'Mật khẩu xác nhận không khớp',
-					icon: 'error',
-					confirmButtonText: 'OK'
-				});
-				return;
 			}
+		});
+
+		registerForm.on('submit', function(e) {
+			e.preventDefault();
+			let isValid = true;
+
+			// Reset all errors
+			registerForm.find('.is-invalid').removeClass('is-invalid');
+
+			// Validate username
+			if (registerUsername.val().trim() === '') {
+				registerUsername.addClass('is-invalid').next('.invalid-feedback').text('Tên đăng nhập không được để trống.');
+				isValid = false;
+			}
+
+			// Validate email
+			if (!validateEmail(registerEmail.val())) {
+				registerEmail.addClass('is-invalid').next('.invalid-feedback').text('Vui lòng nhập một địa chỉ email hợp lệ.');
+				isValid = false;
+			}
+
+			// Validate password
+			if (registerPassword.val().length < 6) {
+				registerPassword.addClass('is-invalid').next('.invalid-feedback').text('Mật khẩu phải có ít nhất 6 ký tự.');
+				isValid = false;
+			}
+
+			// Validate password confirm
+			if (registerPassword.val() !== registerPasswordConfirm.val() || registerPasswordConfirm.val() === '') {
+				registerPasswordConfirm.addClass('is-invalid').next('.invalid-feedback').text('Mật khẩu xác nhận không khớp.');
+				isValid = false;
+			}
+
+			if (!isValid) return; // Dừng lại nếu có lỗi
+
+			// --- Nếu form hợp lệ, tiến hành gửi AJAX ---
+			const submitButton = $(this).find('button[type="submit"]');
+			toggleButtonLoading(submitButton, true);
 
 			var formData = {
 				action: 'ajax_register',
-				username: $('#register-username').val(),
-				email: $('#register-email').val(),
-				password: password,
+				username: registerUsername.val(),
+				email: registerEmail.val(),
+				password: registerPassword.val(),
 				nonce: '<?php echo wp_create_nonce('ajax_register_nonce'); ?>'
 			};
 
@@ -397,10 +455,80 @@
 							text: 'Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.',
 							icon: 'success',
 							confirmButtonText: 'OK'
-						}).then((result) => {
-							// Chuyển sang form đăng nhập
+						}).then(() => {
 							$('#registerModal').modal('hide');
 							$('#loginModal').modal('show');
+						});
+					} else {
+						Swal.fire({
+							title: 'Lỗi!',
+							text: response.data,
+							icon: 'error',
+							confirmButtonText: 'Thử lại'
+						});
+					}
+				},
+				error: function() {
+					Swal.fire({
+						title: 'Lỗi!',
+						text: 'Đã có lỗi xảy ra, vui lòng thử lại sau.',
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+				},
+				complete: function() {
+					toggleButtonLoading(submitButton, false);
+				}
+			});
+		});
+
+		// --- XỬ LÝ FORM ĐĂNG NHẬP ---
+		const loginForm = $('#login-form');
+		const loginUsername = $('#login-username');
+		const loginPassword = $('#login-password');
+
+		loginForm.on('submit', function(e) {
+			e.preventDefault();
+			let isValid = true;
+
+			loginForm.find('.is-invalid').removeClass('is-invalid');
+
+			if(loginUsername.val().trim() === '') {
+				loginUsername.addClass('is-invalid');
+				isValid = false;
+			}
+			if(loginPassword.val().trim() === '') {
+				loginPassword.addClass('is-invalid');
+				isValid = false;
+			}
+
+			if (!isValid) return;
+
+			const submitButton = $(this).find('button[type="submit"]');
+			toggleButtonLoading(submitButton, true);
+
+			var formData = {
+				action: 'ajax_login',
+				username: loginUsername.val(),
+				password: loginPassword.val(),
+				remember: $('#remember-me').is(':checked'),
+				nonce: '<?php echo wp_create_nonce('ajax_login_nonce'); ?>'
+			};
+
+			$.ajax({
+				url: '<?php echo admin_url('admin-ajax.php'); ?>',
+				type: 'POST',
+				data: formData,
+				success: function(response) {
+					if (response.success) {
+						Swal.fire({
+							title: 'Thành công!',
+							text: 'Đăng nhập thành công',
+							icon: 'success',
+							timer: 1500,
+							showConfirmButton: false
+						}).then(() => {
+							window.location.reload();
 						});
 					} else {
 						Swal.fire({
@@ -410,8 +538,44 @@
 							confirmButtonText: 'OK'
 						});
 					}
+				},
+				error: function() {
+					Swal.fire({
+						title: 'Lỗi!',
+						text: 'Đã có lỗi xảy ra, vui lòng thử lại sau.',
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+				},
+				complete: function() {
+					toggleButtonLoading(submitButton, false);
 				}
 			});
+		});
+
+		// --- XỬ LÝ CHUNG CHO CÁC MODAL ---
+
+		// Chức năng ẩn/hiện mật khẩu
+		$('.password-toggle').on('click', function() {
+			const passwordInput = $(this).prev('input[type="password"], input[type="text"]');
+			const icon = $(this).find('i');
+			if (passwordInput.attr('type') === 'password') {
+				passwordInput.attr('type', 'text');
+				icon.removeClass('fa-eye').addClass('fa-eye-slash');
+			} else {
+				passwordInput.attr('type', 'password');
+				icon.removeClass('fa-eye-slash').addClass('fa-eye');
+			}
+		});
+
+		// Reset form khi modal bị đóng
+		$('.modal').on('hidden.bs.modal', function () {
+			const form = $(this).find('form');
+			if (form.length) {
+				form[0].reset();
+				form.find('.is-invalid').removeClass('is-invalid');
+				toggleButtonLoading(form.find('button[type="submit"]'), false);
+			}
 		});
 	});
 	</script>

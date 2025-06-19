@@ -1049,72 +1049,253 @@ function commicpro_add_comments_support() {
 }
 add_action('init', 'commicpro_add_comments_support');
 
-// Xử lý AJAX đăng nhập
+/**
+ * Xử lý AJAX đăng nhập - Phiên bản tối ưu
+ * Có khả năng hiển thị thông báo lỗi cụ thể (bao gồm cả lỗi chưa kích hoạt).
+ */
 function ajax_login() {
+    // 1. Xác thực Nonce
     check_ajax_referer('ajax_login_nonce', 'nonce');
 
-    $username = sanitize_text_field($_POST['username']);
-    $password = $_POST['password'];
-    $remember = isset($_POST['remember']) ? true : false;
+    // 2. Lấy dữ liệu
+    $info = array();
+    $info['user_login'] = sanitize_text_field($_POST['username']);
+    $info['user_password'] = $_POST['password'];
+    $info['remember'] = isset($_POST['remember']) ? true : false;
 
-    $user = wp_authenticate($username, $password);
+    // 3. Xác thực người dùng
+    // Sử dụng wp_signon thay vì wp_authenticate để có thể xử lý cả cookie
+    $user_signon = wp_signon($info, false);
 
-    if (is_wp_error($user)) {
-        wp_send_json_error('Tên đăng nhập hoặc mật khẩu không đúng');
+    // 4. Kiểm tra kết quả
+    if (is_wp_error($user_signon)) {
+        /**
+         * Đây là phần tối ưu quan trọng.
+         * Lấy thông báo lỗi cụ thể từ WP_Error và gửi về cho client.
+         * Ví dụ: "Tài khoản của bạn chưa được kích hoạt." hoặc "Mật khẩu không đúng."
+         */
+        wp_send_json_error($user_signon->get_error_message());
     } else {
-        wp_set_auth_cookie($user->ID, $remember);
-        wp_set_current_user($user->ID);
-        do_action('wp_login', $user->user_login, $user);
+        /**
+         * wp_signon đã tự xử lý việc set cookie và current user.
+         * Chúng ta không cần gọi lại wp_set_auth_cookie và wp_set_current_user.
+         */
         wp_send_json_success('Đăng nhập thành công');
     }
 }
 add_action('wp_ajax_nopriv_ajax_login', 'ajax_login');
+add_action('wp_ajax_ajax_login', 'ajax_login'); // Thêm hook này để xử lý cho cả user đã đăng nhập (dù ít khi xảy ra)
 
-// Xử lý AJAX đăng ký
-function ajax_register() {
+/**
+ * --------------------------------------------------------------------------
+ * TÍNH NĂNG KÍCH HOẠT TÀI KHOẢN QUA EMAIL
+ * --------------------------------------------------------------------------
+ */
+
+/**
+ * PHẦN 1: SỬA ĐỔI QUÁ TRÌNH ĐĂNG KÝ AJAX
+ * Ghi đè hoặc sửa đổi hàm ajax_register của bạn.
+ * Thay vì chỉ tạo user, chúng ta sẽ thêm meta để đánh dấu là chưa kích hoạt và gửi email.
+ */
+add_action('wp_ajax_nopriv_ajax_register', 'my_theme_ajax_register_with_activation');
+
+function my_theme_ajax_register_with_activation() {
+    // 1. Xác thực Nonce để bảo mật
     check_ajax_referer('ajax_register_nonce', 'nonce');
 
-    $username = sanitize_text_field($_POST['username']);
+    // 2. Lấy và làm sạch dữ liệu
+    $username = sanitize_user($_POST['username']);
     $email = sanitize_email($_POST['email']);
     $password = $_POST['password'];
 
-    // Kiểm tra username
+    // 3. Kiểm tra dữ liệu đầu vào
+    if (empty($username) || empty($email) || empty($password)) {
+        wp_send_json_error('Vui lòng điền đầy đủ thông tin.');
+    }
     if (username_exists($username)) {
-        wp_send_json_error('Tên đăng nhập đã tồn tại');
-        return;
+        wp_send_json_error('Tên đăng nhập này đã tồn tại.');
     }
-
-    // Kiểm tra email
     if (email_exists($email)) {
-        wp_send_json_error('Email đã được sử dụng');
-        return;
+        wp_send_json_error('Địa chỉ email này đã được sử dụng.');
+    }
+    if (!is_email($email)) {
+        wp_send_json_error('Địa chỉ email không hợp lệ.');
+    }
+    if (strlen($password) < 6) {
+        wp_send_json_error('Mật khẩu phải có ít nhất 6 ký tự.');
     }
 
-    // Tạo user mới
+    // 4. Tạo người dùng
     $user_id = wp_create_user($username, $password, $email);
 
     if (is_wp_error($user_id)) {
         wp_send_json_error($user_id->get_error_message());
-        return;
+    } else {
+        // 5. TẠO MÃ KÍCH HOẠT & LƯU VÀO USER META
+        // Tạo một mã ngẫu nhiên, khó đoán
+        $activation_key = wp_generate_password(20, false); 
+        
+        // Đánh dấu tài khoản là chưa kích hoạt (0 = false)
+        update_user_meta($user_id, '_is_activated', 0);
+        
+        // Lưu mã kích hoạt
+        update_user_meta($user_id, '_activation_key', $activation_key);
+
+        // 6. GỬI EMAIL KÍCH HOẠT
+        $activation_link = add_query_arg(
+            array(
+                'action' => 'activate',
+                'user_id' => $user_id,
+                'key' => $activation_key,
+            ),
+            home_url() // Link sẽ có dạng: yoursite.com/?action=activate&user_id=123&key=xyz...
+        );
+
+        $subject = '[' . get_bloginfo('name') . '] Kích hoạt tài khoản của bạn';
+        
+        $message = "Chào mừng bạn đã đăng ký tài khoản tại " . get_bloginfo('name') . ".\n\n";
+        $message .= "Để hoàn tất đăng ký và kích hoạt tài khoản, vui lòng nhấn vào đường link dưới đây:\n";
+        $message .= $activation_link . "\n\n";
+        $message .= "Nếu bạn không thực hiện việc đăng ký này, vui lòng bỏ qua email này.\n\n";
+        $message .= "Trân trọng,\n";
+        $message .= "BQT " . get_bloginfo('name');
+        
+        // Gửi mail bằng hàm của WordPress
+        wp_mail($email, $subject, $message);
+
+        // 7. Gửi phản hồi thành công về cho AJAX
+        wp_send_json_success('Đăng ký thành công. Vui lòng kiểm tra hộp thư email (cả mục Spam/Quảng cáo) để kích hoạt tài khoản của bạn.');
     }
-
-    // Gửi email xác nhận
-    $user = get_user_by('id', $user_id);
-    $to = $email;
-    $subject = 'Xác nhận đăng ký tài khoản';
-    $message = sprintf(
-        'Xin chào %s,\n\nCảm ơn bạn đã đăng ký tài khoản tại %s.\n\nTên đăng nhập: %s\n\nVui lòng truy cập trang web để đăng nhập: %s',
-        $username,
-        get_bloginfo('name'),
-        $username,
-        wp_login_url()
-    );
-    $headers = array('Content-Type: text/plain; charset=UTF-8');
-    wp_mail($to, $subject, $message, $headers);
-
-    wp_send_json_success('Đăng ký thành công');
 }
-add_action('wp_ajax_nopriv_ajax_register', 'ajax_register');
+
+
+/**
+ * PHẦN 2: XỬ LÝ LINK KÍCH HOẠT
+ * Hàm này sẽ chạy mỗi khi trang được tải, lắng nghe các tham số trên URL.
+ */
+add_action('init', 'my_theme_handle_account_activation');
+
+function my_theme_handle_account_activation() {
+    // Chỉ chạy khi có tham số 'action' là 'activate'
+    if (isset($_GET['action']) && $_GET['action'] === 'activate' && isset($_GET['user_id']) && isset($_GET['key'])) {
+        
+        $user_id = intval($_GET['user_id']);
+        $sent_key = sanitize_text_field($_GET['key']);
+        
+        // Lấy mã đã lưu trong database
+        $stored_key = get_user_meta($user_id, '_activation_key', true);
+
+        // Kiểm tra xem user có tồn tại và mã có khớp không
+        if ($user_id > 0 && !empty($stored_key) && hash_equals($stored_key, $sent_key)) {
+            // Kích hoạt thành công!
+            
+            // Cập nhật trạng thái kích hoạt (1 = true)
+            update_user_meta($user_id, '_is_activated', 1);
+            
+            // Xóa mã kích hoạt đi để không thể sử dụng lại
+            delete_user_meta($user_id, '_activation_key');
+            
+            // Chuyển hướng người dùng đến trang đăng nhập với thông báo thành công
+            wp_redirect(add_query_arg('activated', 'true', wp_login_url()));
+            exit;
+        } else {
+            // Kích hoạt thất bại
+            wp_redirect(add_query_arg('activated', 'false', wp_login_url()));
+            exit;
+        }
+    }
+}
+
+/**
+ * PHẦN 3: NGĂN ĐĂNG NHẬP NẾU TÀI KHOẢN CHƯA KÍCH HOẠT
+ * Can thiệp vào quá trình xác thực đăng nhập.
+ */
+add_filter('wp_authenticate_user', 'my_theme_prevent_inactive_login', 10, 2);
+
+function my_theme_prevent_inactive_login($user, $password) {
+    if (isset($user->ID)) {
+        $is_activated = get_user_meta($user->ID, '_is_activated', true);
+        
+        // Nếu meta tồn tại và giá trị là 0 (chưa kích hoạt)
+        if ($is_activated === '0' || $is_activated === 0) {
+            // Trả về một WP_Error để ngăn đăng nhập
+            return new WP_Error(
+                'account_not_activated',
+                '<strong>LỖI:</strong> Tài khoản của bạn chưa được kích hoạt. Vui lòng kiểm tra email để kích hoạt.'
+            );
+        }
+    }
+    return $user;
+}
+
+/**
+ * PHẦN 4 (Tùy chọn): HIỂN THỊ THÔNG BÁO TRÊN TRANG ĐĂNG NHẬP
+ * Hiển thị thông báo "Kích hoạt thành công/thất bại" sau khi chuyển hướng.
+ */
+add_filter('login_message', 'my_theme_custom_login_message');
+
+function my_theme_custom_login_message($message) {
+    if (isset($_GET['activated'])) {
+        if ($_GET['activated'] === 'true') {
+            $message = '<p class="message green">Tài khoản của bạn đã được kích hoạt thành công! Vui lòng đăng nhập.</p>';
+        } elseif ($_GET['activated'] === 'false') {
+            $message = '<p class="message"><strong>LỖI:</strong> Link kích hoạt không hợp lệ hoặc đã hết hạn.</p>';
+        }
+    }
+    return $message;
+}
+
+// Thêm một chút CSS cho thông báo màu xanh
+function my_theme_login_styles() {
+    echo '<style>.login .message.green { border-left-color: #4CAF50; }</style>';
+}
+add_action('login_head', 'my_theme_login_styles');
+
+// Xử lý AJAX đăng ký
+// function ajax_register() {
+//     check_ajax_referer('ajax_register_nonce', 'nonce');
+
+//     $username = sanitize_text_field($_POST['username']);
+//     $email = sanitize_email($_POST['email']);
+//     $password = $_POST['password'];
+
+//     // Kiểm tra username
+//     if (username_exists($username)) {
+//         wp_send_json_error('Tên đăng nhập đã tồn tại');
+//         return;
+//     }
+
+//     // Kiểm tra email
+//     if (email_exists($email)) {
+//         wp_send_json_error('Email đã được sử dụng');
+//         return;
+//     }
+
+//     // Tạo user mới
+//     $user_id = wp_create_user($username, $password, $email);
+
+//     if (is_wp_error($user_id)) {
+//         wp_send_json_error($user_id->get_error_message());
+//         return;
+//     }
+
+//     // Gửi email xác nhận
+//     $user = get_user_by('id', $user_id);
+//     $to = $email;
+//     $subject = 'Xác nhận đăng ký tài khoản';
+//     $message = sprintf(
+//         'Xin chào %s,\n\nCảm ơn bạn đã đăng ký tài khoản tại %s.\n\nTên đăng nhập: %s\n\nVui lòng truy cập trang web để đăng nhập: %s',
+//         $username,
+//         get_bloginfo('name'),
+//         $username,
+//         wp_login_url()
+//     );
+//     $headers = array('Content-Type: text/plain; charset=UTF-8');
+//     wp_mail($to, $subject, $message, $headers);
+
+//     wp_send_json_success('Đăng ký thành công');
+// }
+// add_action('wp_ajax_nopriv_ajax_register', 'ajax_register');
 
 // Đăng ký AJAX handler cho việc mua gói VIP
 add_action('wp_ajax_process_vip_purchase', 'process_vip_purchase_handler');
